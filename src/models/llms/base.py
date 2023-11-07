@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from ..output import GenerationResult
+from src.models.output import GenerationResult
 
 
 class BaseLLM(ABC):

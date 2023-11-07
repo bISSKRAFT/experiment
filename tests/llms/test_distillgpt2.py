@@ -1,4 +1,5 @@
-from ...src.llms.testLLM import Distillgpt2Local
+from src.llms.testLLM import Distillgpt2Local
+
 
 # @pytest.mark.parametrize("sequence, expected_result", [
 #    ("Hello, my dog is cute", True),

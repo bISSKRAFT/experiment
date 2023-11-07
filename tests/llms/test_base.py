@@ -1,4 +1,4 @@
-from ...src.models.llms.base import InferenceLLM
+from src.models.llms.base import InferenceLLM
 
 
 class MockLLM(InferenceLLM):
