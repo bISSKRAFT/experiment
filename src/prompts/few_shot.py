@@ -6,7 +6,6 @@ from src.prompts.prompt import BaseTemplate, PromptTemplate
 from src.utils.formatting import formatter
 
 
-
 class FewShotTemplate(BaseTemplate):
     """Few-shot template."""
     input_variables: List[str]

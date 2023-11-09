@@ -87,3 +87,23 @@ def test_raise_error_if_stop_in_variable() -> None:
             examples_delimiter="\n",
             validation=True,
         )
+
+
+def test_raise_error_no_examples() -> None:
+    template = FewShotTemplate(
+        suffix=PromptTemplate(
+            template="This is a {placeholder} test",
+            input_variables=["placeholder"],
+        ),
+        prefix=None,
+        input_variables=["placeholder"],
+        examples=None,
+        examples_prompt=PromptTemplate(
+            template="This is a {example_plh} example",
+            input_variables=["example_plh"],
+        ),
+        examples_delimiter="\n",
+        validation=True,
+    )
+    with pytest.raises(ValueError):
+        template.format(placeholder="validation")
