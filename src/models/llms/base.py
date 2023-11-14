@@ -28,6 +28,7 @@ class BaseLLM(ABC):
 
 
 class InferenceLLM(BaseLLM, ABC):
+    """Interface for inference language models"""
 
     @abstractmethod
     def _call(
