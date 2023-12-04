@@ -4,7 +4,7 @@ import torch
 from multiprocessing.sharedctypes import Synchronized
 from multiprocessing import Value, Event, Process
 from multiprocessing.synchronize import Event as EventClass
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 import time
 
 from src.models.profiler.memory import BaseMemoryProfiler
@@ -41,6 +41,9 @@ class MemoryProfilerCallback():
 
         return memory_report
 
+    def organize_memory_report(self, memory_report: List[dict]) -> Dict[str, list]:
+        return {key: [dic[key] for dic in memory_report] for key in memory_report[0]}
+    
 
 
 class MemoryProfilerProcess(BaseMemoryProfiler):
