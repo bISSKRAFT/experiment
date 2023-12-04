@@ -19,7 +19,10 @@ class BaseLLM(ABC):
         """Run the LLM on the given input"""
 
     @abstractmethod
-    def _get_prompt_length_in_tokens(self, prompts: str | List[str]) -> List[int]:
+    def _get_prompt_length_in_tokens(
+                self, 
+                prompts: str | List[str]
+        ) -> List[int]:
         """Get the length of the prompt in tokens"""
 
     def generate_prompt(
@@ -52,6 +55,23 @@ class InferenceLLM(BaseLLM, ABC):
     model_name: str
 
     config: dict
+
+    @abstractmethod
+    def _get_config(
+                self, 
+                checkpoint: str, 
+                config: dict
+        ) -> dict:
+        """Get the model config from the checkpoint"""
+
+    @abstractmethod
+    def _get_model(
+                self, 
+                checkpoint: str, 
+                config: dict, 
+                compiling: bool = False
+        ):
+        """Get the model from the checkpoint"""
 
     @abstractmethod
     def _call(
