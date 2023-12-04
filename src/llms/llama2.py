@@ -10,13 +10,23 @@ class Llama2Local(InferenceLLM):
                  config: Optional[AutoConfig] = None, 
                  compiling: bool = False):
         self.model_name = checkpoint
-        if config is None:
-            config = AutoConfig.from_pretrained(checkpoint)
+        config = self._get_config(checkpoint, config)
         self.tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-        self.model = AutoModelForCausalLM.from_pretrained(checkpoint, config=config).to(device="cuda:0")
-        if compiling:
-            self.model = torch.compile(self.model)
+        self.model = self._get_model(checkpoint, config, compiling)
         self.config = self.model.config.to_dict()
+
+    def _get_config(self, checkpoint: str, config: Optional[AutoConfig] = None) -> AutoConfig:
+        if config is None:
+            return AutoConfig.from_pretrained(checkpoint)
+        return config
+    
+    def _get_model(self, checkpoint: str, config: AutoConfig, compiling: bool = False):
+        model = AutoModelForCausalLM.from_pretrained(
+            checkpoint, 
+            config=config).to(device="cuda:0")
+        if compiling:
+            model = torch.compile(model)
+        return model
 
     def _call(self, prompt: str) -> str:
         tokens = self._tokenize(prompt).to(device="cuda:0")
