@@ -29,7 +29,7 @@ def test_few_shot_value_error() -> None:
             input_variables=[],
             examples=examples,
             examples_prompt=example_prompt,
-            example_delimiter="\n",
+            examples_delimiter="\n",
             validation=True,
         )
 
