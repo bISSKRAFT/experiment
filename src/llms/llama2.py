@@ -38,9 +38,19 @@ class Llama2Local(InferenceLLM):
             raise TypeError("sequences must be a string or list of strings")
         return self.tokenizer(sequence, return_tensors="pt")
     
-    def _get_prompt_length_in_tokens(self, prompts: str | List[str]) -> List[int]:
+    def _get_prompt_length_in_tokens(self, prompts: List[str]) -> List[int]:
         if isinstance(prompts, str):
             prompts = [prompts]
         tokens = self._tokenize(prompts)["input_ids"]
         return [len(token) for token in tokens]
+    
+@NotImplemented
+class Llama2Optimum(InferenceLLM):
+
+    def __init__(
+            self,
+            checkpoint: str
+        ) -> None:
+        pass
+        
     

@@ -33,3 +33,8 @@ def test_invoke_with_config():
     result = llama2.invoke("Hello, my dog is cute", MemoryProfilerCallback("test"))
     print(result)
     assert isinstance(result, GenerationResult)
+    assert result.used_model == "meta-llama/Llama-2-7b-chat-hf"
+    assert isinstance(result.config, dict)
+    assert result.config == llama2.config
+    assert isinstance(result.generations, list)
+    assert isinstance(result.generations[0], str)

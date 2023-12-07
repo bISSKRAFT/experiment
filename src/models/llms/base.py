@@ -1,14 +1,17 @@
 from abc import ABC, abstractmethod
 from typing import List
-from src.models.output import GenerationResult
 import time
+
+from src.models.output import GenerationResult
 
 
 
 class BaseLLM(ABC):
     """A class to represent a language model"""
 
-    prompt_lengths: List[int]
+    model_name: str
+
+    config: dict
 
     @abstractmethod
     def _generate(
@@ -21,7 +24,7 @@ class BaseLLM(ABC):
     @abstractmethod
     def _get_prompt_length_in_tokens(
                 self, 
-                prompts: str | List[str]
+                prompts: List[str]
         ) -> List[int]:
         """Get the length of the prompt in tokens"""
 
@@ -31,8 +34,12 @@ class BaseLLM(ABC):
             callbacks,
     ) -> GenerationResult:
         """Generate a LLM response from the given input"""
-        self.prompt_lengths = self._get_prompt_length_in_tokens(prompts)
-        return self._generate(prompts, callbacks)
+        prompt_lengths = self._get_prompt_length_in_tokens(prompts)
+        generations = self._generate(prompts, callbacks)
+        generations.used_model = self.model_name
+        generations.config = self.config
+        generations.prompt_length_in_tokens = prompt_lengths
+        return generations
 
     def invoke(self,
                prompt: str,
@@ -51,10 +58,6 @@ class BaseLLM(ABC):
 
 class InferenceLLM(BaseLLM, ABC):
     """Interface for inference language models"""
-
-    model_name: str
-
-    config: dict
 
     @abstractmethod
     def _get_config(
@@ -98,12 +101,11 @@ class InferenceLLM(BaseLLM, ABC):
                 mem_report.append(callbacks.memory_report())
 
         organized_mem_report = callbacks.organize_memory_report(mem_report) if callbacks else {}
+        generation_lengths = self._get_prompt_length_in_tokens(generations)
 
         return GenerationResult(
-            used_model=self.model_name,
-            config=self.config,
-            prompt_length_in_tokens=self.prompt_lengths,
             generations=generations,
+            generation_length_in_tokens=generation_lengths,
             inference_time=inference_time if inference_time else None,
             vram_alloc_requests=organized_mem_report.get("alloc_requests", None),
             vram_free_requestst=organized_mem_report.get("free_requests", None),

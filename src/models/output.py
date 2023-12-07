@@ -8,15 +8,17 @@ from pydantic import BaseModel
 class GenerationResult(BaseModel):
     """A class to represent the result of a generation"""
 
-    used_model: str
+    used_model: Optional[str] = None
 
-    config: dict
+    config: Optional[dict] = None
 
     generations: List[str]
 
     inference_time: Optional[List[float]] = None
 
     prompt_length_in_tokens: Optional[List[int]] = None
+
+    generation_length_in_tokens: Optional[List[int]] = None
 
     ram: Optional[List[float]] = None
 
