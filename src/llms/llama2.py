@@ -43,14 +43,14 @@ class Llama2Local(InferenceLLM):
             prompts = [prompts]
         tokens = self._tokenize(prompts)["input_ids"]
         return [len(token) for token in tokens]
-    
-@NotImplemented
-class Llama2Optimum(InferenceLLM):
 
-    def __init__(
-            self,
-            checkpoint: str
-        ) -> None:
-        pass
+
+# class Llama2Optimum(InferenceLLM):
+
+#     def __init__(
+#             self,
+#             checkpoint: str
+#         ) -> None:
+#         pass
         
     

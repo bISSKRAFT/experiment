@@ -1,16 +1,14 @@
-from unittest import result
 from src.models.llms.base import InferenceLLM
 from src.utils.profiler.memory_profiler import MemoryProfilerCallback
 from src.llms.llama2 import Llama2Local
 from src.models.output import GenerationResult
-import torch
 from transformers import AutoConfig, AutoTokenizer, AutoModelForCausalLM
 
 
 
 def test_token_counting():
     llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf")
-    res = llama2._get_prompt_length_in_tokens("Hello, my dog is cute")[0]
+    res = llama2._get_prompt_length_in_tokens(["Hello, my dog is cute"])[0]
     assert res > 0
 
 def test_invoke_():
@@ -28,7 +26,7 @@ def test_batch():
 def test_invoke_with_config():
     config = AutoConfig.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
     config.update({"torch_dtype": "bfloat16"})
-    llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf",config=config, compiling=True)
+    llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf",config=config, compiling=False)
     assert llama2.model.config.torch_dtype == "bfloat16"
     result = llama2.invoke("Hello, my dog is cute", MemoryProfilerCallback("test"))
     print(result)
