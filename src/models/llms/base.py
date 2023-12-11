@@ -1,0 +1,117 @@
+from abc import ABC, abstractmethod
+from typing import List
+import time
+
+from src.models.output import GenerationResult
+
+
+
+class BaseLLM(ABC):
+    """A class to represent a language model"""
+
+    model_name: str
+
+    config: dict
+
+    @abstractmethod
+    def _generate(
+            self,
+            prompts: List[str],
+            callbacks,
+    ) -> GenerationResult:
+        """Run the LLM on the given input"""
+
+    @abstractmethod
+    def _get_prompt_length_in_tokens(
+                self, 
+                prompts: List[str]
+        ) -> List[int]:
+        """Get the length of the prompt in tokens"""
+
+    def generate_prompt(
+            self,
+            prompts: List[str],
+            callbacks,
+    ) -> GenerationResult:
+        """Generate a LLM response from the given input"""
+        prompt_lengths = self._get_prompt_length_in_tokens(prompts)
+        generations = self._generate(prompts, callbacks)
+        generations.used_model = self.model_name
+        generations.config = self.config
+        generations.prompt_length_in_tokens = prompt_lengths
+        return generations
+
+    def invoke(self,
+               prompt: str,
+               callbacks = None,
+               ) -> GenerationResult:
+        """Generate a LLM response from the given input"""
+        return self.generate_prompt([prompt], callbacks)
+    
+    def batch(self,
+              prompts: List[str],
+              callbacks = None,
+              ) -> GenerationResult:
+        """Generate LLM response from a batch of prompts"""
+        return self.generate_prompt(prompts, callbacks)
+
+
+class InferenceLLM(BaseLLM, ABC):
+    """Interface for inference language models"""
+
+    @abstractmethod
+    def _get_config(
+                self, 
+                checkpoint: str, 
+                config: dict
+        ) -> dict:
+        """Get the model config from the checkpoint"""
+
+    @abstractmethod
+    def _get_model(
+                self, 
+                checkpoint: str, 
+                config: dict, 
+                compiling: bool = False
+        ):
+        """Get the model from the checkpoint"""
+
+    @abstractmethod
+    def _call(
+            self,
+            prompt: str
+    ) -> str:
+        """Run the LLM on the given input"""
+
+    def _generate(
+            self,
+            prompts: List[str],
+            callbacks,
+    ) -> GenerationResult:
+        """Run the LLM on the given input"""
+        generations = []
+        mem_report = []
+        inference_time = []
+
+        for prompt in prompts:
+            start_time = time.perf_counter()
+            generations.append(self._call(prompt))
+            inference_time.append(time.perf_counter() - start_time)
+            if callbacks:
+                mem_report.append(callbacks.memory_report())
+
+        organized_mem_report = callbacks.organize_memory_report(mem_report) if callbacks else {}
+        generation_lengths = self._get_prompt_length_in_tokens(generations)
+
+        return GenerationResult(
+            generations=generations,
+            generation_length_in_tokens=generation_lengths,
+            inference_time=inference_time if inference_time else None,
+            vram_alloc_requests=organized_mem_report.get("alloc_requests", None),
+            vram_free_requestst=organized_mem_report.get("free_requests", None),
+            vram_allocated_mem=organized_mem_report.get("allocated_mem", None),
+            vram_active_mem=organized_mem_report.get("active_mem", None),
+            vram_inactive_mem=organized_mem_report.get("inactive_mem", None),
+            vram_reserved_mem=organized_mem_report.get("reserved_mem", None),
+            vram_alloc_retries=organized_mem_report.get("alloc_retries", None),
+        )
