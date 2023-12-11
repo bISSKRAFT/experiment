@@ -28,6 +28,17 @@ class BaseLLM(ABC):
         ) -> List[int]:
         """Get the length of the prompt in tokens"""
 
+    def get_model_size(self) -> int:
+        """Get the maximum length of the model"""
+        max_position_embeddings = self.config.get("max_position_embeddings", 0)
+        n_positions = self.config.get("n_positions", 0)
+        if max_position_embeddings > 0:
+            return max_position_embeddings
+        elif n_positions > 0:
+            return n_positions
+        else:
+            return 0
+
     def generate_prompt(
             self,
             prompts: List[str],

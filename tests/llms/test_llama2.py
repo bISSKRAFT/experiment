@@ -2,9 +2,16 @@ from src.models.llms.base import InferenceLLM
 from src.utils.profiler.memory_profiler import MemoryProfilerCallback
 from src.llms.llama2 import Llama2Local
 from src.models.output import GenerationResult
-from transformers import AutoConfig, AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoConfig
 
 
+
+def test_initialization():
+    llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf")
+    assert isinstance(llama2, InferenceLLM)
+    assert isinstance(llama2.config, dict)
+    assert llama2.model.config.to_dict() == llama2.config
+    assert llama2.get_model_size() == 4096
 
 def test_token_counting():
     llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf")
