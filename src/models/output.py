@@ -14,6 +14,8 @@ class GenerationResult(BaseModel):
 
     generations: List[str]
 
+    generation_config: Optional[dict] = None
+
     inference_time: Optional[List[float]] = None
 
     prompt_length_in_tokens: Optional[List[int]] = None

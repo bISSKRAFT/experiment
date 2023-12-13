@@ -20,13 +20,33 @@ def test_token_counting():
 
 def test_invoke_():
     llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf", compiling=True)
-    result = llama2.invoke("Hello, my dog is cute", MemoryProfilerCallback("test"))
+    result = llama2.invoke("Hello, my dog is cute", callbacks=MemoryProfilerCallback("test"))
     print(result)
     assert isinstance(result, GenerationResult)
 
+def test_invoke_generation_config():
+    llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf")
+    generation_config = {"max_length": 10}
+    result = llama2.invoke("Hello, my dog is cute", generation_config=generation_config, callbacks=MemoryProfilerCallback("test"))
+    print(result)
+    assert isinstance(result, GenerationResult)
+    assert result.generation_config is not None
+    assert result.generation_config["max_length"] == 10
+    assert result.generation_length_in_tokens is not None
+    assert result.generation_length_in_tokens[0] == 10
+
+def test_invoke_generation_config_empty():
+    llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf")
+    result = llama2.invoke("Hello, my dog is cute", callbacks=MemoryProfilerCallback("test"))
+    print(result)
+    assert isinstance(result, GenerationResult)
+    assert result.generation_config is None
+    assert result.generation_length_in_tokens is not None
+    assert result.generation_length_in_tokens[0] > 0
+
 def test_batch():
     llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf")
-    result = llama2.batch(["Hello, my dog is cute", "Goodbye, and "], MemoryProfilerCallback("test"))
+    result = llama2.batch(["Hello, my dog is cute", "Goodbye, and "], callbacks=MemoryProfilerCallback("test"))
     print(result)
     assert isinstance(result, GenerationResult)
 
@@ -35,7 +55,7 @@ def test_invoke_with_config():
     config.update({"torch_dtype": "bfloat16"})
     llama2 = Llama2Local(checkpoint="meta-llama/Llama-2-7b-chat-hf",config=config, compiling=False)
     assert llama2.model.config.torch_dtype == "bfloat16"
-    result = llama2.invoke("Hello, my dog is cute", MemoryProfilerCallback("test"))
+    result = llama2.invoke("Hello, my dog is cute", callbacks=MemoryProfilerCallback("test"))
     print(result)
     assert isinstance(result, GenerationResult)
     assert result.used_model == "meta-llama/Llama-2-7b-chat-hf"

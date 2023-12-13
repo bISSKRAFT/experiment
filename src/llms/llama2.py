@@ -28,9 +28,11 @@ class Llama2Local(InferenceLLM):
             model = torch.compile(model)
         return model
 
-    def _call(self, prompt: str) -> str:
+    def _call(self, prompt: str, generation_config: Optional[dict]) -> str:
+        if generation_config is None:
+            generation_config = {}
         tokens = self._tokenize(prompt).to(device="cuda:0")
-        output_tokens = self.model.generate(**tokens, max_length=50)
+        output_tokens = self.model.generate(**tokens, **generation_config)
         return self.tokenizer.batch_decode(output_tokens, skip_special_tokens=True)[0]
 
     def _tokenize(self, sequence: List[str] | str) -> BatchEncoding:

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 import time
 
 from src.models.output import GenerationResult
@@ -17,6 +17,7 @@ class BaseLLM(ABC):
     def _generate(
             self,
             prompts: List[str],
+            generation_config: Optional[dict],
             callbacks,
     ) -> GenerationResult:
         """Run the LLM on the given input"""
@@ -42,11 +43,12 @@ class BaseLLM(ABC):
     def generate_prompt(
             self,
             prompts: List[str],
+            generation_config: Optional[dict],
             callbacks,
     ) -> GenerationResult:
         """Generate a LLM response from the given input"""
         prompt_lengths = self._get_prompt_length_in_tokens(prompts)
-        generations = self._generate(prompts, callbacks)
+        generations = self._generate(prompts, callbacks, generation_config)
         generations.used_model = self.model_name
         generations.config = self.config
         generations.prompt_length_in_tokens = prompt_lengths
@@ -54,17 +56,19 @@ class BaseLLM(ABC):
 
     def invoke(self,
                prompt: str,
+               generation_config: Optional[dict] = None,
                callbacks = None,
                ) -> GenerationResult:
         """Generate a LLM response from the given input"""
-        return self.generate_prompt([prompt], callbacks)
+        return self.generate_prompt([prompt], callbacks, generation_config)
     
     def batch(self,
               prompts: List[str],
+              generation_config: Optional[dict] = None,
               callbacks = None,
               ) -> GenerationResult:
         """Generate LLM response from a batch of prompts"""
-        return self.generate_prompt(prompts, callbacks)
+        return self.generate_prompt(prompts, callbacks, generation_config)
 
 
 class InferenceLLM(BaseLLM, ABC):
@@ -90,13 +94,15 @@ class InferenceLLM(BaseLLM, ABC):
     @abstractmethod
     def _call(
             self,
-            prompt: str
+            prompt: str,
+            generation_config: Optional[dict],
     ) -> str:
         """Run the LLM on the given input"""
 
     def _generate(
             self,
             prompts: List[str],
+            generation_config: Optional[dict],
             callbacks,
     ) -> GenerationResult:
         """Run the LLM on the given input"""
@@ -106,7 +112,7 @@ class InferenceLLM(BaseLLM, ABC):
 
         for prompt in prompts:
             start_time = time.perf_counter()
-            generations.append(self._call(prompt))
+            generations.append(self._call(prompt, generation_config))
             inference_time.append(time.perf_counter() - start_time)
             if callbacks:
                 mem_report.append(callbacks.memory_report())
@@ -116,6 +122,7 @@ class InferenceLLM(BaseLLM, ABC):
 
         return GenerationResult(
             generations=generations,
+            generation_config=generation_config,
             generation_length_in_tokens=generation_lengths,
             inference_time=inference_time if inference_time else None,
             vram_alloc_requests=organized_mem_report.get("alloc_requests", None),
