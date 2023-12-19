@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 import time
+from src.llms.config.generation_config import GenerationConfigMixin
 
 from src.models.output import GenerationResult
 
@@ -17,7 +18,7 @@ class BaseLLM(ABC):
     def _generate(
             self,
             prompts: List[str],
-            generation_config: Optional[dict],
+            generation_config: Optional[GenerationConfigMixin],
             callbacks,
     ) -> GenerationResult:
         """Run the LLM on the given input"""
@@ -43,7 +44,7 @@ class BaseLLM(ABC):
     def generate_prompt(
             self,
             prompts: List[str],
-            generation_config: Optional[dict],
+            generation_config: Optional[GenerationConfigMixin],
             callbacks,
     ) -> GenerationResult:
         """Generate a LLM response from the given input"""
@@ -56,7 +57,7 @@ class BaseLLM(ABC):
 
     def invoke(self,
                prompt: str,
-               generation_config: Optional[dict] = None,
+               generation_config: Optional[GenerationConfigMixin] = None,
                callbacks = None,
                ) -> GenerationResult:
         """Generate a LLM response from the given input"""
@@ -64,7 +65,7 @@ class BaseLLM(ABC):
     
     def batch(self,
               prompts: List[str],
-              generation_config: Optional[dict] = None,
+              generation_config: Optional[GenerationConfigMixin] = None,
               callbacks = None,
               ) -> GenerationResult:
         """Generate LLM response from a batch of prompts"""
@@ -95,14 +96,14 @@ class InferenceLLM(BaseLLM, ABC):
     def _call(
             self,
             prompt: str,
-            generation_config: Optional[dict],
+            generation_config: Optional[GenerationConfigMixin],
     ) -> str:
         """Run the LLM on the given input"""
 
     def _generate(
             self,
             prompts: List[str],
-            generation_config: Optional[dict],
+            generation_config: Optional[GenerationConfigMixin],
             callbacks,
     ) -> GenerationResult:
         """Run the LLM on the given input"""
@@ -122,7 +123,7 @@ class InferenceLLM(BaseLLM, ABC):
 
         return GenerationResult(
             generations=generations,
-            generation_config=generation_config,
+            generation_config=generation_config.generation_config if generation_config else None,
             generation_length_in_tokens=generation_lengths,
             inference_time=inference_time if inference_time else None,
             vram_alloc_requests=organized_mem_report.get("alloc_requests", None),

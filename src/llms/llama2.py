@@ -1,5 +1,6 @@
 from typing import List, Optional
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding, GenerationConfig
+from src.llms.config.generation_config import GenerationConfigMixin
 from src.models.llms.base import InferenceLLM
 import torch
 
@@ -28,11 +29,11 @@ class Llama2Local(InferenceLLM):
             model = torch.compile(model)
         return model
 
-    def _call(self, prompt: str, generation_config: Optional[dict]) -> str:
+    def _call(self, prompt: str, generation_config: Optional[GenerationConfigMixin]) -> str:
         if generation_config is None:
-            generation_config = {}
+            generation_config = GenerationConfigMixin()
         tokens = self._tokenize(prompt).to(device="cuda:0")
-        output_tokens = self.model.generate(**tokens, **generation_config)
+        output_tokens = self.model.generate(**tokens, generation_config=generation_config.to_hf_generation_config())
         return self.tokenizer.batch_decode(output_tokens, skip_special_tokens=True)[0]
 
     def _tokenize(self, sequence: List[str] | str) -> BatchEncoding:
