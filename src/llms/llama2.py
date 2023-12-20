@@ -1,20 +1,29 @@
 from typing import List, Optional
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding, GenerationConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding
 from src.llms.config.generation_config import GenerationConfigMixin
 from src.models.llms.base import InferenceLLM
 import torch
 
 class Llama2Local(InferenceLLM):
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(Llama2Local, cls).__new__(cls)
+            cls._instance.__initialized = False
+        return cls._instance
 
     def __init__(self, 
                  checkpoint: str,
                  config: Optional[AutoConfig] = None, 
                  compiling: bool = False):
+        if self.__initialized: return
         self.model_name = checkpoint
         config = self._get_config(checkpoint, config)
         self.tokenizer = AutoTokenizer.from_pretrained(checkpoint)
         self.model = self._get_model(checkpoint, config, compiling)
         self.config = self.model.config.to_dict()
+        self.__initialized = True
 
     def _get_config(self, checkpoint: str, config: Optional[AutoConfig] = None) -> AutoConfig:
         if config is None:
@@ -41,7 +50,7 @@ class Llama2Local(InferenceLLM):
             raise TypeError("sequences must be a string or list of strings")
         return self.tokenizer(sequence, return_tensors="pt")
     
-    def _get_prompt_length_in_tokens(self, prompts: List[str]) -> List[int]:
+    def _get_prompt_length_in_tokens(self, prompts: List[str] | str) -> List[int]:
         if isinstance(prompts, str):
             prompts = [prompts]
         tokens = self._tokenize(prompts)["input_ids"]
