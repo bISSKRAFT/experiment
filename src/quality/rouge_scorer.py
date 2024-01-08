@@ -11,6 +11,7 @@ class RougeQualityScorer(QualityScorerBase):
                 use_stemmer: bool=True
     ) -> None:
         self.scorer = rouge_scorer.RougeScorer(rouge_metrics, use_stemmer=use_stemmer)
+        self.name = "QualityRougeScorer"
 
     def compute_score(self,
                     candidates: List[str], 
