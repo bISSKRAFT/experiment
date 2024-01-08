@@ -107,21 +107,26 @@ class InferenceLLM(BaseLLM, ABC):
             callbacks,
     ) -> GenerationResult:
         """Run the LLM on the given input"""
+        full_generations = []
         generations = []
         mem_report = []
         inference_time = []
 
+        # TODO: extraction of generation move to GenerationResult (+test)
         for prompt in prompts:
             start_time = time.perf_counter()
-            generations.append(self._call(prompt, generation_config))
+            gen = self._call(prompt, generation_config)
             inference_time.append(time.perf_counter() - start_time)
             if callbacks:
                 mem_report.append(callbacks.memory_report())
+            full_generations.append(gen)
+            generations.append(gen.replace(prompt, ""))
 
         organized_mem_report = callbacks.organize_memory_report(mem_report) if callbacks else {}
         generation_lengths = self._get_prompt_length_in_tokens(generations)
 
         return GenerationResult(
+            full_generations=full_generations,
             generations=generations,
             generation_config=generation_config.generation_config if generation_config else None,
             generation_length_in_tokens=generation_lengths,
@@ -134,3 +139,9 @@ class InferenceLLM(BaseLLM, ABC):
             vram_reserved_mem=organized_mem_report.get("reserved_mem", None),
             vram_alloc_retries=organized_mem_report.get("alloc_retries", None),
         )
+    
+    @classmethod
+    @abstractmethod
+    def factory(cls) -> 'InferenceLLM':
+        """Factory method to create a new LLM"""
+        

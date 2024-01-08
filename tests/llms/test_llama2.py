@@ -62,5 +62,7 @@ def test_invoke_with_config():
     assert result.used_model == "meta-llama/Llama-2-7b-chat-hf"
     assert isinstance(result.config, dict)
     assert result.config == llama2.config
+    assert isinstance(result.full_generations, list)
+    assert isinstance(result.full_generations[0], str)
     assert isinstance(result.generations, list)
     assert isinstance(result.generations[0], str)
