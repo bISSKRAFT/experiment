@@ -167,3 +167,6 @@ cython_debug/
 
 # VSC
 .vscode/
+
+# data paths
+benchmarks/data/papers/
