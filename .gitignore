@@ -170,3 +170,6 @@ cython_debug/
 
 # data paths
 benchmarks/data/papers/
+
+# environment files
+.env 
