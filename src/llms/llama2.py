@@ -1,4 +1,3 @@
-import gc
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding
@@ -13,7 +12,10 @@ class Llama2Locals(Enum):
     llama2_7b_chat = "meta-llama/Llama-2-7b-chat-hf"
     llama2_13b_chat = "meta-llama/Llama-2-13b-chat-hf"
     llama2_70b_chat = "meta-llama/Llama-2-70b-chat-hf"
-    llama2_7b_chat_awq_quantized = "TheBloke/Llama-2-7b-Chat-AWQ"
+    llama2_7b_chat_the_bloke_awq = "TheBloke/Llama-2-7b-Chat-AWQ"
+    llama2_13b_chat_the_bloke_awq = "TheBloke/Llama-2-13b-Chat-AWQ"
+    llama2_70b_chat_the_bloke_awq = "TheBloke/Llama-2-70b-Chat-AWQ"
+
 
 
 class Llama2Local(InferenceLLM):
@@ -103,19 +105,23 @@ class Llama2LocalFactory(InferenceLLMFactory):
             cls._flush()
             cls.set_instance(Llama2Local(
                 AutoModelForCausalLM.from_pretrained,
-                Llama2Locals.llama2_7b_chat.value,
+                model.value,
                 params={"device_map": "cuda:0"},
                 config=config
                 ))
             return cls.get_instance()
-        if model == Llama2Locals.llama2_7b_chat_awq_quantized:
+        if model in [
+            Llama2Locals.llama2_7b_chat_the_bloke_awq,
+            Llama2Locals.llama2_13b_chat_the_bloke_awq,
+            Llama2Locals.llama2_70b_chat_the_bloke_awq
+            ]:
             instance_check = cls._check_for_instance(model)
             if instance_check:
                 return instance_check
             cls._flush()
             cls.set_instance(Llama2LocalQuantized(
                 AutoAWQForCausalLM.from_quantized,
-                Llama2Locals.llama2_7b_chat_awq_quantized.value,
+                model.value,
                 params={
                     "device_map": "auto",
                     "fuse_layers": True,
