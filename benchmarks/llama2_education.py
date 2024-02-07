@@ -15,17 +15,18 @@ import json
 import glob
 import re    
 
-from src.llms.llama2 import Llama2Local
+from src.llms.llama2 import Llama2LocalFactory, Llama2Locals
 from src.llms.config.generation_config import GenerationConfigMixin
 from src.prompts.few_shot import FewShotTemplate
 from src.prompts.prompt import PromptTemplate
 from src.utils.profiler.memory_profiler import MemoryProfilerCallback
 from src.utils.kpis.performance import calculate_tokens_per_second
 from src.quality.rouge_scorer import RougeQualityScorer
+from src.data.hf_datasets import HellaSwagDataset
 
 import benchmarks.data.prompts.prefix.roles as roles
 import benchmarks.data.prompts.prefix.instructions as instructions
-from benchmarks.run import run_benchmark
+from benchmarks.run import run_benchmark, preprocess_dataset
 #%%
 # SETUP: rouge scorer
 rouge_scorer = RougeQualityScorer(rouge_metrics=['rouge1', 'rouge2', 'rougeL'])
@@ -103,7 +104,9 @@ print(prompt)
 
 # %%
 # SETUP: LLM
-llm = Llama2Local.factory("meta-llama/Llama-2-7b-chat-hf")
+llama2_factory = Llama2LocalFactory()
+
+llm = llama2_factory.create(Llama2Locals.llama2_7b_chat)
 print("[USED LLM]:        ", llm.model_name)
 
 # %%
@@ -116,15 +119,37 @@ llm = Llama2Local.factory(
 print("[USED LLM]:        ", llm.model_name)
 
 # %%
-run_benchmark(
+# DO: use HellaSwag Dataset and create prompts
+dataset = HellaSwagDataset()
+
+prefix = PromptTemplate(
+    template="You are given unfinished sentence and the candidates, please select the candidate that seems most logical.\nHere are some exapmles:",
+    input_variables=[],
+)
+example_prompt = PromptTemplate(
+        template="unfinished sentence: {variable1}\ncandidates: {variable2}\ncorrect answer index: {variable3}",
+        input_variables=["variable1", "variable2", "variable3"],
+)
+suffix = PromptTemplate(
+        template="Now you are given a unfinished sentence and the candidates, please select the correct candidate.\nunfinished sentence: {context}\ncandidates: {candidate}\ncorrect answer index: ",
+        input_variables=["context", "candidate"],
+)
+hellasweg_prompts, hellaswag_labels = preprocess_dataset(
+    dataset,
+    prefix,
+    example_prompt,
+    suffix,
+    10
+)
+print(hellasweg_prompts[0])
+# %%
+result =run_benchmark(
     llm=llm,
     prompt=prompt,
     scorer=rouge_scorer,
     reference=reference,
     generation_config=GenerationConfigMixin(do_sample=False, max_new_tokens=500),
 )
-
-
 
 
 

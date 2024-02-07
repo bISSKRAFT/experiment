@@ -1,5 +1,5 @@
 from optparse import Option
-from typing import List, Optional
+from typing import Iterable, List, Optional
 from pydantic import BaseModel
 
 
@@ -60,3 +60,19 @@ class GenerationResult(BaseModel):
     def __eq__(self, compare: object) -> bool:
         """Check if two GenerationResult objects are equal"""
         return self.generations == compare.generations
+
+
+class BenchmarkResult(GenerationResult):
+    """A class to represent the output of a benchmark"""
+
+    input_prompt_length: Optional[List[int]] = None
+
+    remaining_tokens: Optional[List[int]] = None
+
+    time_to_first_token: Optional[List[float]] = None
+
+    tokens_per_second: Optional[List[float]] = None
+
+    scores: Optional[Iterable] = None
+
+

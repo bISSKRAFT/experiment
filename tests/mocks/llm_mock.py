@@ -17,3 +17,6 @@ class MockLLM(InferenceLLM):
     
     def _get_model(self, checkpoint: str, config: dict, compiling: bool = False):
         return None
+    
+    def factory(self, checkpoint: str, config: dict) -> 'MockLLM':
+        return self
