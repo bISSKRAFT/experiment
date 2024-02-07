@@ -13,7 +13,7 @@ class Llama2Locals(Enum):
     llama2_7b_chat = "meta-llama/Llama-2-7b-chat-hf"
     llama2_13b_chat = "meta-llama/Llama-2-13b-chat-hf"
     llama2_70b_chat = "meta-llama/Llama-2-70b-chat-hf"
-    llama2_7b_chat_quantized = "TheBloke/Llama-2-7b-Chat-AWQ"
+    llama2_7b_chat_awq_quantized = "TheBloke/Llama-2-7b-Chat-AWQ"
 
 
 class Llama2Local(InferenceLLM):
@@ -117,12 +117,12 @@ class Llama2LocalQuantized(Llama2Local):
     def _tokenize(self, sequence: List[str] | str) -> BatchEncoding:
         if not isinstance(sequence, str) and not isinstance(sequence, list):
             raise TypeError("sequences must be a string or list of strings")
-        return self.tokenizer(sequence, return_tensors="pt").input_ids.to(device="cuda:0")
+        return self.tokenizer(sequence, return_tensors="pt").input_ids.to(device="cuda")
     
     def _call(self, prompt: str, generation_config: Optional[GenerationConfigMixin]) -> str:
         if generation_config is None:
             generation_config = GenerationConfigMixin()
-        tokens = self._tokenize(prompt).to(device="cuda:0")
+        tokens = self._tokenize(prompt).to(device="cuda")
         output_tokens = self.model.generate(tokens, generation_config=generation_config.to_hf_generation_config())
         return self.tokenizer.batch_decode(output_tokens, skip_special_tokens=True)[0]
 
@@ -153,9 +153,24 @@ class Llama2LocalFactory(InferenceLLMFactory):
                 config=config
                 )
             return cls.__INSTANCE
-        if model == Llama2Locals.llama2_7b_chat_quantized:
-            raise NotImplementedError("Quantized models are not yet supported.")
-            return None
+        if model == Llama2Locals.llama2_7b_chat_awq_quantized:
+            instance_check = cls.__check_for_instance(model)
+            if instance_check:
+                return instance_check
+            cls.__flush()
+            cls.__INSTANCE = Llama2LocalQuantized(
+                AutoAWQForCausalLM.from_quantized,
+                Llama2Locals.llama2_7b_chat_awq_quantized.value,
+                params={
+                    "device_map": "auto",
+                    "fuse_layers": True,
+                    "trust_remote_code": False,
+                    "safetensors": True,
+                },
+                config=config
+            )
+            return cls.__INSTANCE
+        raise ValueError(f"Model {model} is not supported by Llama2LocalFactory")
 
     @classmethod   
     def __check_for_instance(cls, model: Llama2Locals) -> InferenceLLM | None:

@@ -103,19 +103,19 @@ prompt = prompt + "[/INST]"
 print(prompt)
 
 # %%
-# SETUP: LLM
+# SETUP: load factory
 llama2_factory = Llama2LocalFactory()
 
+# %%
+# SETUP: create LLM 
 llm = llama2_factory.create(Llama2Locals.llama2_7b_chat)
 print("[USED LLM]:        ", llm.model_name)
 
 # %%
 
 # %%
-llm = Llama2Local.factory(
-                    checkpoint="TheBloke/Llama-2-7b-Chat-AWQ",
-                    quanitize="awq",
-                    )
+
+llm = llama2_factory.create(Llama2Locals.llama2_7b_chat_awq_quantized)
 print("[USED LLM]:        ", llm.model_name)
 
 # %%
