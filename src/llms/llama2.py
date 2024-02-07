@@ -85,7 +85,6 @@ class Llama2LocalQuantized(Llama2Local):
 
 class Llama2LocalFactory(InferenceLLMFactory):
 
-    __INSTANCE = None
 
     @classmethod
     def create(
@@ -98,23 +97,23 @@ class Llama2LocalFactory(InferenceLLMFactory):
             Llama2Locals.llama2_13b_chat,
             Llama2Locals.llama2_70b_chat
             ]:
-            instance_check = cls.__check_for_instance(model)
+            instance_check = cls._check_for_instance(model)
             if instance_check:
                 return instance_check
-            cls.__flush()
-            cls.__INSTANCE = Llama2Local(
+            cls._flush()
+            cls.set_instance(Llama2Local(
                 AutoModelForCausalLM.from_pretrained,
                 Llama2Locals.llama2_7b_chat.value,
                 params={"device_map": "cuda:0"},
                 config=config
-                )
-            return cls.__INSTANCE
+                ))
+            return cls.get_instance()
         if model == Llama2Locals.llama2_7b_chat_awq_quantized:
-            instance_check = cls.__check_for_instance(model)
+            instance_check = cls._check_for_instance(model)
             if instance_check:
                 return instance_check
-            cls.__flush()
-            cls.__INSTANCE = Llama2LocalQuantized(
+            cls._flush()
+            cls.set_instance(Llama2LocalQuantized(
                 AutoAWQForCausalLM.from_quantized,
                 Llama2Locals.llama2_7b_chat_awq_quantized.value,
                 params={
@@ -124,23 +123,10 @@ class Llama2LocalFactory(InferenceLLMFactory):
                     "safetensors": True,
                 },
                 config=config
-            )
-            return cls.__INSTANCE
+            ))
+            return cls.get_instance()
         raise ValueError(f"Model {model} is not supported by Llama2LocalFactory")
-
-    @classmethod   
-    def __check_for_instance(cls, model: Llama2Locals) -> InferenceLLM | None:
-        if cls.__INSTANCE is not None and cls.__INSTANCE.model_name == model.value:
-            return cls.__INSTANCE
-        return None
     
-    @classmethod
-    def __flush(cls):
-        print("Llama2LocalFactory: FLUSHING INSTANCE...")
-        del cls.__INSTANCE
-        gc.collect()
-        torch.cuda.empty_cache()
-        torch.cuda.reset_peak_memory_stats()
     
 
 # class Llama2Optimum(InferenceLLM):
