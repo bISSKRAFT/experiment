@@ -66,50 +66,6 @@ class Llama2Local(InferenceLLM):
             prompts = [prompts]
         tokens = self._tokenize(prompts)
         return [len(token) for token in tokens]
-    
-
-    @classmethod
-    def factory(cls,
-            checkpoint: str = "",
-            config: Optional[AutoConfig] = None,
-            quanitize: Optional[str] = None,
-        ) -> 'Llama2Local':
-        # TODO: 
-        # - qunatization: awq and gtpq
-        # - fusing: with awq quantization
-        # - flash_anttention: with quantization and without
-        """Factory for constructing Llama2Local"""
-        #global cls.__INSTANCE
-        if cls.__INSTANCE is not None and cls.__INSTANCE.model_name == checkpoint:
-            return cls.__INSTANCE
-        del cls.__INSTANCE
-        gc.collect()
-        if not checkpoint:
-            raise ValueError("checkpoint must be specified")
-        if quanitize:
-            if quanitize not in ["gptq", "awq"]:
-                raise ValueError(f"quanitize must be one of gptq, but was {quanitize}.")
-            if "thebloke" not in checkpoint.lower():
-                raise ValueError(f"quanitize via checkpoint is only supported for TheBloke models, but was {checkpoint}.")
-            cls.__INSTANCE = Llama2Local(
-                AutoAWQForCausalLM.from_quantized,
-                checkpoint,
-                params={
-                    "device_map": "auto",
-                    "fuse_layers": True,
-                    "trust_remote_code": False,
-                    "safetensors": True,
-                },
-                config=config
-            )
-            return cls.__INSTANCE
-        cls.__INSTANCE = Llama2Local(
-                AutoModelForCausalLM.from_pretrained,
-                checkpoint,
-                params={"device_map": "cuda:0"},
-                config=config
-            )
-        return cls.__INSTANCE
 
 
 class Llama2LocalQuantized(Llama2Local):
@@ -180,6 +136,7 @@ class Llama2LocalFactory(InferenceLLMFactory):
     
     @classmethod
     def __flush(cls):
+        print("Llama2LocalFactory: FLUSHING INSTANCE...")
         del cls.__INSTANCE
         gc.collect()
         torch.cuda.empty_cache()

@@ -113,8 +113,6 @@ print("[USED LLM]:        ", llm.model_name)
 
 # %%
 
-# %%
-
 llm = llama2_factory.create(Llama2Locals.llama2_7b_chat_awq_quantized)
 print("[USED LLM]:        ", llm.model_name)
 
