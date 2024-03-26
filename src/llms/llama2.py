@@ -15,12 +15,12 @@ class Llama2Locals(Enum):
     llama2_7b_chat_the_bloke_awq = "TheBloke/Llama-2-7b-Chat-AWQ"
     llama2_13b_chat_the_bloke_awq = "TheBloke/Llama-2-13b-Chat-AWQ"
     llama2_70b_chat_the_bloke_awq = "TheBloke/Llama-2-70b-Chat-AWQ"
+    llama_2_7b_chat_awq = "/proj/experiment/.my_models/meta-llama/Llama-2-7b-chat-hf-awq"
+    llama_2_13b_chat_awq = "/proj/experiment/.my_models/meta-llama/Llama-2-13b-chat-hf-awq"
 
 
 
 class Llama2Local(InferenceLLM):
-
-    __INSTANCE = None
 
     def __init__(self,
                  factory: Callable, 
@@ -33,6 +33,7 @@ class Llama2Local(InferenceLLM):
         config = self._get_config(checkpoint, config)
         if params is None:
             params = {}
+        self.checkpoint = checkpoint
         self.model = factory(checkpoint,**params, config=config)
         self.tokenizer = AutoTokenizer.from_pretrained(checkpoint, trust_remote_code=True)
         self.config = self.model.config.to_dict()
@@ -70,7 +71,7 @@ class Llama2Local(InferenceLLM):
         return [len(token) for token in tokens]
 
 
-class Llama2LocalQuantized(Llama2Local):
+class Llama2LocalTheBlokeQuantized(Llama2Local):
     
     def _tokenize(self, sequence: List[str] | str) -> BatchEncoding:
         if not isinstance(sequence, str) and not isinstance(sequence, list):
@@ -85,6 +86,21 @@ class Llama2LocalQuantized(Llama2Local):
         return self.tokenizer.batch_decode(output_tokens, skip_special_tokens=True)[0]
 
 
+class Llama2LocalAwq(Llama2Local):
+    
+    def _tokenize(self, sequence: List[str] | str) -> BatchEncoding:
+        if not isinstance(sequence, str) and not isinstance(sequence, list):
+            raise TypeError("sequences must be a string or list of strings")
+        return self.tokenizer(sequence, return_tensors="pt").input_ids.to(device="cuda")
+
+    def _call(self, prompt: str, generation_config: Optional[GenerationConfigMixin]) -> str:
+        if generation_config is None:
+            generation_config = GenerationConfigMixin()
+        tokens = self._tokenize(prompt).to(device="cuda")
+        output_tokens = self.model.generate(tokens, generation_config=generation_config.to_hf_generation_config())
+        return self.tokenizer.batch_decode(output_tokens, skip_special_tokens=True)[0]
+    
+
 class Llama2LocalFactory(InferenceLLMFactory):
 
 
@@ -94,6 +110,7 @@ class Llama2LocalFactory(InferenceLLMFactory):
             model: Llama2Locals,
             config: Optional[AutoConfig] = None
     ) -> InferenceLLM:
+        # TODO: make functions each branch for more readability
         if model in [
             Llama2Locals.llama2_7b_chat,
             Llama2Locals.llama2_13b_chat,
@@ -119,13 +136,32 @@ class Llama2LocalFactory(InferenceLLMFactory):
             if instance_check:
                 return instance_check
             cls._flush()
-            cls.set_instance(Llama2LocalQuantized(
+            cls.set_instance(Llama2LocalAwq(
                 AutoAWQForCausalLM.from_quantized,
                 model.value,
                 params={
                     "device_map": "auto",
                     "fuse_layers": True,
                     "trust_remote_code": False,
+                    "safetensors": True,
+                },
+                config=config
+            ))
+            return cls.get_instance()
+        if model in [
+            Llama2Locals.llama_2_7b_chat_awq,
+            Llama2Locals.llama_2_13b_chat_awq
+            ]:
+            instance_check = cls._check_for_instance(model)
+            if instance_check:
+                return instance_check
+            cls._flush()
+            cls.set_instance(Llama2LocalAwq(
+                AutoAWQForCausalLM.from_pretrained,
+                model.value,
+                params={
+                    "device_map": "cuda:0",
+                    "trust_remote_code": True,
                     "safetensors": True,
                 },
                 config=config

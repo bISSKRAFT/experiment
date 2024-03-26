@@ -1,7 +1,16 @@
+import copy
+from enum import Enum
+import json
+import time
 from typing import Iterable, List, Optional, Tuple
+from src.models.llms.factories import InferenceLLMFactory
 from src.models.data.base import BaseDatasetMixin
 from src.prompts.few_shot import FewShotTemplate
 from src.prompts.prompt import PromptTemplate
+import lm_eval
+from lm_eval.models.huggingface import HFLM
+import gc
+import torch
 
 from src.llms.config.generation_config import GenerationConfigMixin
 from src.models.llms.base import InferenceLLM
@@ -9,6 +18,40 @@ from src.models.output import BenchmarkResult
 from src.models.quality.base import QualityScorerBase
 from src.utils.kpis.performance import calculate_tokens_per_second
 from src.utils.profiler.memory_profiler import MemoryProfilerCallback
+
+def _create_hf_eval_lm(checkpoint_or_path: str) -> HFLM:
+    return HFLM(pretrained=checkpoint_or_path)
+
+
+def _flush_eval_lm(lm_ref) -> None:
+    del lm_ref
+    gc.collect()
+    torch.cuda.empty_cache()
+    torch.cuda.reset_peak_memory_stats()
+
+
+def _do_benchmark(benchmark: str, llm: HFLM, n_fewshot: int = 1):
+    res_dict = {}
+    res = _create_benchmark(benchmark, llm, n_fewshot)
+    res_dict["results"] = res.get("results")
+    res_dict["configs"] = res.get("configs")
+    res_dict["n-shot"] = res.get("n-shot")
+    res_dict["config"] = res.get("config")
+    res_dict["versions"] = res.get("versions")
+    return res_dict
+
+def _create_benchmark(task: str, lm: HFLM, n_fewshot: int = 1):
+    task_manager = lm_eval.tasks.TaskManager()
+    res=lm_eval.simple_evaluate(
+        model=lm,
+        tasks=task,
+        num_fewshot=n_fewshot,
+        use_cache='/proj/experiment/benchmarks/results',
+        device='cuda:0',
+        task_manager=task_manager
+    )
+    return res
+
 
 def preprocess_dataset(
         dataset: BaseDatasetMixin,
@@ -43,7 +86,7 @@ def preprocess_dataset(
                     example_prompt.input_variables[1]: candidates[j],
                     example_prompt.input_variables[2]: labels[j]
                 }
-                    for j in range(i,n_examples)
+                    for j in range(i,n_examples+i)
                 ]
             few_shot_template = FewShotTemplate(
                 prefix=prefix,
@@ -66,10 +109,11 @@ def preprocess_dataset(
     
 
 def run_benchmark(
-        llm: InferenceLLM,
+        llm_factory: InferenceLLMFactory,
+        model: Enum,
         prompt: str,
-        scorer: QualityScorerBase,
-        reference: str,
+        scorer: Optional[QualityScorerBase],
+        reference: Optional[str],
         generation_config: GenerationConfigMixin,
 ) -> BenchmarkResult:
     """
@@ -81,7 +125,33 @@ def run_benchmark(
     :param generation_config: The generation config to use.
     :return: The benchmark result.
     """
-    
+    assert model.value is not None
+
+    # careful: this creates a new instance of the model
+    eval_harness_lm = _create_hf_eval_lm(model.value)
+
+    callback = MemoryProfilerCallback("lm_harness")
+    hellaswag_res = _do_benchmark('hellaswag', eval_harness_lm, 10)
+    mem_report_hellaswag = callback.memory_report()
+
+    del eval_harness_lm
+    gc.collect()
+    torch.cuda.empty_cache()
+    torch.cuda.reset_peak_memory_stats()
+
+    eval_harness_lm = _create_hf_eval_lm(model.value)
+    arc_res = _do_benchmark('ai2_arc', eval_harness_lm, 25)
+    mem_report_arc = callback.memory_report()
+
+    del eval_harness_lm
+    gc.collect()
+    torch.cuda.empty_cache()
+    torch.cuda.reset_peak_memory_stats()
+
+    time.sleep(5)
+
+    llm = llm_factory.create(model)
+
     # caluclate prompt length
     print("Preprocessing...")
     input_prompt_length = llm._get_prompt_length_in_tokens([prompt])[0]
@@ -128,17 +198,24 @@ def run_benchmark(
     print("GENERATION:          ")
     print(result.generations)
 
-    print("\n\n")
-    print("--- QUALITY METRICS ---")
-    # score result
-    scores = scorer.compute_score(result.generations, reference)
-    scorer.print_scores()
+    # LEGACY
+    #
+    #
+    # print("\n\n")
+    # print("--- QUALITY METRICS ---")
+    # # score result
+    # scores = scorer.compute_score(result.generations, reference)
+    # scorer.print_scores()
 
     return BenchmarkResult(
         **result.model_dump(),
         input_prompt_length=input_prompt_length if isinstance(input_prompt_length, List) else [input_prompt_length],
         time_to_first_token=pre_generation_time if isinstance(pre_generation_time, List) else [pre_generation_time],
-        scores=scores,
-        tokens_per_second=tokens_second
+        tokens_per_second=tokens_second,
+        hellaswag_quality=hellaswag_res,
+        hellaswag_performance=mem_report_hellaswag,
+        arc_quality=arc_res,
+        arc_performance=mem_report_arc,
+        time_stamp=time.strftime("%Y-%m-%d %H:%M:%S")
     )
     

@@ -1,5 +1,5 @@
 from optparse import Option
-from typing import Iterable, List, Optional
+from typing import Dict, Iterable, List, Optional
 from pydantic import BaseModel
 
 
@@ -74,5 +74,15 @@ class BenchmarkResult(GenerationResult):
     tokens_per_second: Optional[List[float]] = None
 
     scores: Optional[Iterable] = None
+
+    hellaswag_quality: Optional[Dict] = None
+
+    hellaswag_performance: Optional[Dict] = None
+
+    arc_quality: Optional[Dict] = None
+
+    arc_performance: Optional[Dict] = None
+
+    time_stamp: Optional[str] = None
 
 

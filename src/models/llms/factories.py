@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from enum import Enum
 import gc
 import torch
 from src.models.llms.base import InferenceLLM
@@ -9,7 +10,7 @@ class InferenceLLMFactory(ABC):
     _INSTANCE = None
 
     @abstractmethod
-    def create(self, model_name: str) -> InferenceLLM:
+    def create(self, model_or_name: str | Enum) -> InferenceLLM:
         pass
 
     @classmethod   

@@ -27,10 +27,6 @@ from src.data.hf_datasets import HellaSwagDataset
 import benchmarks.data.prompts.prefix.roles as roles
 import benchmarks.data.prompts.prefix.instructions as instructions
 from benchmarks.run import run_benchmark, preprocess_dataset
-#%%
-# SETUP: rouge scorer
-rouge_scorer = RougeQualityScorer(rouge_metrics=['rouge1', 'rouge2', 'rougeL'])
-
 # %%
 # SETUP: read in data
 
@@ -139,13 +135,14 @@ hellasweg_prompts, hellaswag_labels = preprocess_dataset(
     suffix,
     10
 )
-print(hellasweg_prompts[0])
+print(hellasweg_prompts[100])
 # %%
 result =run_benchmark(
-    llm=llm,
+    llm_factory=llama2_factory,
+    model=Llama2Locals.llama2_7b_chat,
     prompt=prompt,
-    scorer=rouge_scorer,
-    reference=reference,
+    scorer=None,
+    reference=None,
     generation_config=GenerationConfigMixin(do_sample=False, max_new_tokens=500),
 )
 
