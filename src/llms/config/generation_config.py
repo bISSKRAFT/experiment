@@ -10,3 +10,6 @@ class GenerationConfigMixin:
         return GenerationConfig(
             **self.generation_config
         )
+    
+    def __setitem__(self, key, value):
+        self.generation_config[key] = value

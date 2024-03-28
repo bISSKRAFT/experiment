@@ -1384,4 +1384,716 @@
         "alloc_retries": 0
     },
     "time_stamp": "2024-03-26 15:08:29"
+}{
+    "used_model": "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-gptq",
+    "config": {
+        "vocab_size": 32000,
+        "max_position_embeddings": 4096,
+        "hidden_size": 4096,
+        "intermediate_size": 11008,
+        "num_hidden_layers": 32,
+        "num_attention_heads": 32,
+        "num_key_value_heads": 32,
+        "hidden_act": "silu",
+        "initializer_range": 0.02,
+        "rms_norm_eps": 0.00001,
+        "pretraining_tp": 1,
+        "use_cache": true,
+        "rope_theta": 10000.0,
+        "rope_scaling": null,
+        "attention_bias": false,
+        "attention_dropout": 0.0,
+        "return_dict": true,
+        "output_hidden_states": false,
+        "output_attentions": false,
+        "torchscript": false,
+        "torch_dtype": "float16",
+        "use_bfloat16": false,
+        "tf_legacy_loss": false,
+        "pruned_heads": {},
+        "tie_word_embeddings": false,
+        "is_encoder_decoder": false,
+        "is_decoder": false,
+        "cross_attention_hidden_size": null,
+        "add_cross_attention": false,
+        "tie_encoder_decoder": false,
+        "max_length": 20,
+        "min_length": 0,
+        "do_sample": false,
+        "early_stopping": false,
+        "num_beams": 1,
+        "num_beam_groups": 1,
+        "diversity_penalty": 0.0,
+        "temperature": 1.0,
+        "top_k": 50,
+        "top_p": 1.0,
+        "typical_p": 1.0,
+        "repetition_penalty": 1.0,
+        "length_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "encoder_no_repeat_ngram_size": 0,
+        "bad_words_ids": null,
+        "num_return_sequences": 1,
+        "chunk_size_feed_forward": 0,
+        "output_scores": false,
+        "return_dict_in_generate": false,
+        "forced_bos_token_id": null,
+        "forced_eos_token_id": null,
+        "remove_invalid_values": false,
+        "exponential_decay_length_penalty": null,
+        "suppress_tokens": null,
+        "begin_suppress_tokens": null,
+        "architectures": [
+            "LlamaForCausalLM"
+        ],
+        "finetuning_task": null,
+        "id2label": {
+            "0": "LABEL_0",
+            "1": "LABEL_1"
+        },
+        "label2id": {
+            "LABEL_0": 0,
+            "LABEL_1": 1
+        },
+        "tokenizer_class": null,
+        "prefix": null,
+        "bos_token_id": 1,
+        "pad_token_id": null,
+        "eos_token_id": 2,
+        "sep_token_id": null,
+        "decoder_start_token_id": null,
+        "task_specific_params": null,
+        "problem_type": null,
+        "_name_or_path": "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-gptq",
+        "transformers_version": "4.36.2",
+        "model_type": "llama",
+        "quantization_config": {
+            "bits": 4,
+            "damp_percent": 0.01,
+            "desc_act": true,
+            "group_size": 128,
+            "is_marlin_format": false,
+            "model_file_base_name": null,
+            "model_name_or_path": null,
+            "quant_method": "gptq",
+            "static_groups": false,
+            "sym": true,
+            "true_sequential": true
+        }
+    },
+    "full_generations": [
+        "[INST] <<SYS>>\nYou are a helpful research assistant. Your task is to write literature reviews based on a research question and scientific sources you are given.\n\nA literature review is a critical analysis of existing research on a topic. It aims to summarize, synthesize, and evaluate the current state of knowledge, identify gaps and limitations, and provide recommendations for future research.\n\n\nYour literature review should be structured as follows:\n\n### Introduction\nIntroduce the research question, explain the purpose and scope of your review, and provide an overview of the main themes or subtopics that you can extract from the sources.\n\n### Body\nDiscuss each theme or subtopic in detail, using evidence and examples from the sources. Summarize the main points, findings, and implications of the sources and identify the similarities, differences, gaps, and contradictions among them. Highlight the strengths and weaknesses of the existing research and how it contributes to the research question.\n\n### Conclusion\nSummarize the main findings and implications of your review, identify the limitations and gaps in the literature, and suggest directions for future research.\n\nProvide proper citations in your literature review (only Author & Year).\n<</SYS>>\nResearch Question: What is the current state of research on using LLMs to automate educational tasks, specifically through the lens of educational tasks, stakeholders, LLMs, and machine-learning tasks, what are the practical challenges of LLMs in automating educational tasks, specifically through the lens of technological readiness, model performance, and model replicability and what are the ethical challenges of LLMs in automating educational tasks, specifically through the lens of system transparency, privacy, equality, and beneficence?\nlee2023: This study investigates the application of large language models (LLMs), specifically GPT-3.5 and GPT-4, with Chain-of-Though (CoT)in the automatic scoring of student-written responses to science assessments. We focused on overcoming the challenges of accessibility, technical complexity, and lack of explainability that have previously limited the use of automatic assessment tools among researchers and educators. We used a testing dataset comprising six assessment tasks (three binomial and three trinomial) with 1,650 student responses. We employed six prompt engineering strategies, combining zero-shot or few-shot learning with CoT, either alone or alongside item stem and scoring rubrics. Results indicated that few-shot (acc = .67) outperformed zero-shot learning (acc = .60), with 12.6% increase. CoT, when used without item stem and scoring rubrics, did not significantly affect scoring accuracy (acc = .60). However, CoT prompting paired with contextual item stems and rubrics proved to be a significant contributor to scoring accuracy (13.44% increase for zero-shot; 3.7% increase for few-shot). Using a novel approach PPEAS, we found a more balanced accuracy across different proficiency categories, highlighting the importance of domain-specific reasoning in enhancing the effectiveness of LLMs in scoring tasks. Additionally, we also found that GPT-4 demonstrated superior performance over GPT-3.5 in various scoring tasks, showing 8.64% difference. The study revealed that the single-call strategy with GPT-4, particularly using greedy sampling, outperformed other approaches, including ensemble voting strategies. This study demonstrates the potential of LLMs in facilitating automatic scoring, emphasizing that CoT enhances accuracy, particularly when used with item stem and scoring rubrics.\nadewumi2023: We introduce a novel writing method called Probing Chain-of-Thought (ProCoT), which prevents students from cheating using a Large Language Model (LLM), such as ChatGPT, while enhancing their active learning through such models. LLMs have disrupted education and many other feilds. For fear of students cheating, many educationists have resorted to banning their use, as their outputs can be human-like and hard to detect in some cases. These LLMs are also known for hallucinations (i.e. fake “facts”). We conduct studies with ProCoT in two different courses with a combined total of about 66 students. The students in each course were asked to prompt an LLM of their choice with one question from a set of four and required to affirm or refute statements in the LLM output by using peer-reviewed references. The results show two things: (1) ProCoT stimulates creative/critical thinking and writing of students through engagement with LLMs when we compare the LLMsolely output to ProCoT output and (2) ProCoT can prevent cheating because of clear limitations in existing LLMs when we compare students’ ProCoT output to LLM ProCoT output. We also discover that most students prefer to give answers in fewer words than LLMs, which are typically verbose. The average word counts for students, ChatGPT (v3.5) and Phind (v8) are 208, 391 and 383, respectively.\ncobbe2021: State-of-the-art language models can match human performance on many tasks, but they still struggle to robustly perform multi-step mathematical reasoning. To diagnose the failures of current models and support research, we introduce GSM8K, a dataset of 8.5K high quality linguistically diverse grade school math word problems. We find that even the largest transformer models fail to achieve high test performance, despite the conceptual simplicity of this problem distribution. To increase performance, we propose training verifiers to judge the correctness of model completions. At test time, we generate many candidate solutions and select the one ranked highest by the verifier. We demonstrate that verification significantly improves performance on GSM8K, and we provide strong empirical evidence that verification scales more effectively with increased data than a finetuning baseline.\nhuang2022: Large Language Models (LLMs) have achieved excellent performances in various tasks. However, fine-tuning an LLM requires extensive supervision. Human, on the other hand, may improve their reasoning abilities by self-thinking without external inputs. In this work, we demonstrate that an LLM is also capable of self-improving with only unlabeled datasets. We use a pre-trained LLM to generate “high-confidence” rationale-augmented answers for unlabeled questions using Chain-of-Thought prompting and self-consistency, and fine-tune the LLM using those self-generated solutions as target outputs. We show that our approach improves the general reasoning ability of a 540B-parameter LLM (74.4%→82.1% on GSM8K, 78.2%→83.0% on DROP, 90.0%→94.4% on OpenBookQA, and 63.4%→67.9% on ANLI-A3) and achieves state-of-the-art-level performance, without any ground truth label. We conduct ablation studies and show that finetuning on reasoning is critical for self-improvement.\nyao2023: While large language models (LLMs) have demonstrated impressive performance across tasks in language understanding and interactive decision making, their abilities for reasoning (e.g. chain-of-thought prompting) and acting (e.g. action plan generation) have primarily been studied as separate topics. In this paper, we explore the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two: reasoning traces help the model induce, track, and update action plans as well as handle exceptions, while actions allow it to interface with and gather additional information from external sources such as knowledge bases or environments. We apply our approach, named ReAct, to a diverse set of language and decision making tasks and demonstrate its effectiveness over state-of-the-art baselines in addition to improved human interpretability and trustworthiness. Concretely, on question answering (HotpotQA) and fact verification (Fever), ReAct overcomes prevalent issues of hallucination and error propagation in chain-of-thought reasoning by interacting with a simple Wikipedia API, and generating human-like task-solving trajectories that are more interpretable than baselines without reasoning traces. Furthermore, on two interactive decision making benchmarks (ALFWorld and WebShop), ReAct outperforms imitation and reinforcement learning methods by an absolute success rate of 34% and 10% respectively, while being prompted with only one or two in-context examples.\nanishka2023: The emergence of Large language models (LLMs) is expected to have a major impact on education. This paper explores the potential of using ChatGPT, an LLM, as a virtual Teaching Assistant (TA) in an Introductory Programming Course. We evaluate ChatGPT’s capabilities by comparing its performance with that of human TAs in some TA functions. The TA functions which we focus on include (1) solving programming assignments, (2) grading student code submissions, and (3) providing feedback to undergraduate students in an introductory programming course. Firstly, we investigate how closely ChatGPT’s solutions align with those submitted by students. This analysis goes beyond code correctness and also considers code quality. Secondly, we assess ChatGPT’s proficiency in grading student code submissions using a given grading rubric and compare its performance with the grades assigned by human TAs. Thirdly, we analyze the quality and relevance of the feedback provided by ChatGPT. This evaluation considers how well ChatGPT addresses mistakes and offers suggestions for improvement in student solutions from both code correctness and code quality perspectives. We conclude with a discussion on the implications of integrating ChatGPT into computing education for automated grading, personalized learning experiences, and instructional support\nkojima2023: Pretrained large language models (LLMs) are widely used in many sub-fields of natural language processing (NLP) and generally known as excellent few-shot learners with task-specific exemplars. Notably, chain of thought (CoT) prompting, a recent technique for eliciting complex multi-step reasoning through step-bystep answer examples, achieved the state-of-the-art performances in arithmetics and symbolic reasoning, difficult system-2 tasks that do not follow the standard scaling laws for LLMs. While these successes are often attributed to LLMs’ ability for few-shot learning, we show that LLMs are decent zero-shot reasoners by simply adding “Let’s think step by step” before each answer. Experimental results demonstrate that our Zero-shot-CoT, using the same single prompt template, significantly outperforms zero-shot LLM performances on diverse benchmark reasoning tasks including arithmetics (MultiArith, GSM8K, AQUA-RAT, SVAMP), symbolic reasoning (Last Letter, Coin Flip), and other logical reasoning tasks (Date Understanding, Tracking Shuffled Objects), without any hand-crafted few-shot examples, e.g. increasing the accuracy on MultiArith from 17.7% to 78.7% and GSM8K from 10.4% to 40.7% with large-scale InstructGPT model (text-davinci002), as well as similar magnitudes of improvements with another off-the-shelf large model, 540B parameter PaLM. The versatility of this single prompt across very diverse reasoning tasks hints at untapped and understudied fundamental zero-shot capabilities of LLMs, suggesting high-level, multi-task broad cognitive capabilities may be extracted by simple prompting. We hope our work not only serves as the minimal strongest zero-shot baseline for the challenging reasoning benchmarks, but also highlights the importance of carefully exploring and analyzing the enormous zero-shot knowledge hidden inside LLMs before crafting finetuning datasets or few-shot exemplars.\nkasneci2023: Large language models represent a significant advancement in the field of AI. The underlying technology is key to further innovations and, despite critical views and even bans within communities and regions, large language models are here to stay. This commentary presents the potential benefits and challenges of educational applications of large language models, from student and teacher perspectives. We briefly discuss the current state of large language models and their applications. We then highlight how these models can be used to create educational content, improve student engagement and interaction, and personalize learning experiences. With regard to challenges, we argue that large language models in education require teachers and learners to develop sets of competencies and literacies necessary to both understand the technology as well as their limitations and unexpected brittleness of such systems. In addition, a clear strategy within educational systems and a clear pedagogical approach with a strong focus on critical thinking and strategies for fact checking are required to integrate and take full advantage of large language models in learning settings and teaching curricula. Other challenges such as the potential bias in the output, the need for continuous human oversight, and the potential for misuse are not unique to the application of AI in education. But we believe that, if handled sensibly, these challenges can offer insights and opportunities in education scenarios to acquaint students early on with potential societal biases, criticalities, and risks of AI applications. We conclude with recommendations for how to address these challenges and ensure that such models are used in a responsible and ethical manner in education.\nwei2023: We explore how generating a chain of thought—a series of intermediate reasoning steps—significantly improves the ability of large language models to perform complex reasoning. In particular, we show how such reasoning abilities emerge naturally in sufficiently large language models via a simple method called chain-ofthought prompting, where a few chain of thought demonstrations are provided as exemplars in prompting. Experiments on three large language models show that chain-of-thought prompting improves performance on a range of arithmetic, commonsense, and symbolic reasoning tasks. The empirical gains can be striking. For instance, prompting a PaLM 540B with just eight chain-of-thought exemplars achieves state-of-the-art accuracy on the GSM8K benchmark of math word problems, surpassing even finetuned GPT-3 with a verifier.\ndoughty2023: There is a constant need for educators to develop and maintain effective up-to-date assessments. While there is a growing body of research in computing education on utilizing large language models (LLMs) in generation and engagement with coding exercises, the use of LLMs for generating programming MCQs has not been extensively explored. We analyzed the capability of GPT-4 to produce multiple-choice questions (MCQs) aligned with specific learning objectives (LOs) from Python programming classes in higher education. Specifically, we developed an LLM-powered (GPT-4) system for generation of MCQs from high-level course context and module-level LOs. We evaluated 651 LLM-generated and 449 human-crafted MCQs aligned to 246 LOs from 6 Python courses. We found that GPT-4 was capable of producing MCQs with clear language, a single correct choice, and high-quality distractors. We also observed that the generated MCQs appeared to be wellaligned with the LOs. Our findings can be leveraged by educators wishing to take advantage of the state-of-the-art generative models to support MCQ authoring efforts.\nLets think step by step[/INST]  Based on the given literature review, the current state of research on using large language models (LLMs) for automating educational tasks involves the following themes and subtopics:\n\n1. Large language models (LLMs) have shown promising results in various natural language processing (NLP) tasks, including language understanding, reasoning, and decision making.\n2. Chain-of-thought (CoT) prompting is a recent technique that has shown to improve the performance of LLMs in complex reasoning tasks, such as arithmetic and symbolic reasoning.\n3. Probing Chain-of-Thought (ProCoT) is a novel method that prevents students from cheating using LLMs while enhancing their active learning through such models.\n4. GPT-4 demonstrated superior performance over GPT-3.5 in various scoring tasks, and the single-call strategy with GPT-4 outperformed other approaches, including ensemble voting strategies.\n5. Using a novel approach PPEAS, researchers found a more balanced accuracy across different proficiency categories, highlighting the importance of domain-specific reasoning in enhancing the effectiveness of LLMs in scoring tasks.\n6. Huang et al. (2022) demonstrated that an LLM is also capable of self-improving with only unlabeled datasets, and finetuning the LLM using those self-generated solutions as target outputs improves the general reasoning ability of a 540B-parameter LLM.\n7. Yao et al. (2023) explored the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two, and demonstrated the effectiveness of their approach on a diverse set of language and decision-making tasks.\n8. Kojima et al. (2023) showed that LLMs are decent zero-shot reasoners by simply adding \"Let's think step by step\" before each answer, and experimental results demonstrate that their Zero-shot-CoT significantly outperforms zero-shot LLM performances on diverse benchmark reasoning tasks.\n9. Kasneci et al. (2023) discussed the potential benefits and challenges of educational applications of large language models, including the need"
+    ],
+    "generations": [
+        "  Based on the given literature review, the current state of research on using large language models (LLMs) for automating educational tasks involves the following themes and subtopics:\n\n1. Large language models (LLMs) have shown promising results in various natural language processing (NLP) tasks, including language understanding, reasoning, and decision making.\n2. Chain-of-thought (CoT) prompting is a recent technique that has shown to improve the performance of LLMs in complex reasoning tasks, such as arithmetic and symbolic reasoning.\n3. Probing Chain-of-Thought (ProCoT) is a novel method that prevents students from cheating using LLMs while enhancing their active learning through such models.\n4. GPT-4 demonstrated superior performance over GPT-3.5 in various scoring tasks, and the single-call strategy with GPT-4 outperformed other approaches, including ensemble voting strategies.\n5. Using a novel approach PPEAS, researchers found a more balanced accuracy across different proficiency categories, highlighting the importance of domain-specific reasoning in enhancing the effectiveness of LLMs in scoring tasks.\n6. Huang et al. (2022) demonstrated that an LLM is also capable of self-improving with only unlabeled datasets, and finetuning the LLM using those self-generated solutions as target outputs improves the general reasoning ability of a 540B-parameter LLM.\n7. Yao et al. (2023) explored the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two, and demonstrated the effectiveness of their approach on a diverse set of language and decision-making tasks.\n8. Kojima et al. (2023) showed that LLMs are decent zero-shot reasoners by simply adding \"Let's think step by step\" before each answer, and experimental results demonstrate that their Zero-shot-CoT significantly outperforms zero-shot LLM performances on diverse benchmark reasoning tasks.\n9. Kasneci et al. (2023) discussed the potential benefits and challenges of educational applications of large language models, including the need"
+    ],
+    "generation_config": {
+        "do_sample": false,
+        "max_new_tokens": 500,
+        "pad_token_id": 2
+    },
+    "inference_time": [
+        177.938586412
+    ],
+    "prompt_length_in_tokens": [
+        3595
+    ],
+    "generation_length_in_tokens": [
+        501
+    ],
+    "ram": null,
+    "vram_alloc_requests": [
+        2264474
+    ],
+    "vram_free_requestst": [
+        2262966
+    ],
+    "vram_allocated_mem": [
+        40277611379200.0
+    ],
+    "vram_active_mem": [
+        4022673408.0
+    ],
+    "vram_inactive_mem": [
+        328916992.0
+    ],
+    "vram_reserved_mem": [
+        10131341312.0
+    ],
+    "vram_alloc_retries": [
+        0
+    ],
+    "input_prompt_length": [
+        3595
+    ],
+    "remaining_tokens": null,
+    "time_to_first_token": [
+        1.7364731
+    ],
+    "tokens_per_second": [
+        2.8433257160365746
+    ],
+    "scores": null,
+    "hellaswag_quality": {
+        "results": {
+            "hellaswag": {
+                "acc,none": 0.5927106154152559,
+                "acc_stderr,none": 0.004903254264177616,
+                "acc_norm,none": 0.7857996415056762,
+                "acc_norm_stderr,none": 0.004094279871733737,
+                "alias": "hellaswag"
+            }
+        },
+        "configs": {
+            "hellaswag": {
+                "task": "hellaswag",
+                "group": [
+                    "multiple_choice"
+                ],
+                "dataset_path": "hellaswag",
+                "training_split": "train",
+                "validation_split": "validation",
+                "process_docs": "def process_docs(dataset: datasets.Dataset) -> datasets.Dataset:\n    def _process_doc(doc):\n        ctx = doc[\"ctx_a\"] + \" \" + doc[\"ctx_b\"].capitalize()\n        out_doc = {\n            \"query\": preprocess(doc[\"activity_label\"] + \": \" + ctx),\n            \"choices\": [preprocess(ending) for ending in doc[\"endings\"]],\n            \"gold\": int(doc[\"label\"]),\n        }\n        return out_doc\n\n    return dataset.map(_process_doc)\n",
+                "doc_to_text": "{{query}}",
+                "doc_to_target": "{{label}}",
+                "doc_to_choice": "choices",
+                "description": "",
+                "target_delimiter": " ",
+                "fewshot_delimiter": "\n\n",
+                "num_fewshot": 10,
+                "metric_list": [
+                    {
+                        "metric": "acc",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    },
+                    {
+                        "metric": "acc_norm",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    }
+                ],
+                "output_type": "multiple_choice",
+                "repeats": 1,
+                "should_decontaminate": false,
+                "metadata": {
+                    "version": 1.0
+                }
+            }
+        },
+        "n-shot": {
+            "hellaswag": 10
+        },
+        "config": {
+            "model": "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-gptq",
+            "model_args": null,
+            "batch_size": null,
+            "batch_sizes": [],
+            "device": "cuda:0",
+            "use_cache": "/proj/experiment/benchmarks/results",
+            "limit": null,
+            "bootstrap_iters": 100000,
+            "gen_kwargs": null
+        },
+        "versions": {
+            "hellaswag": 1.0
+        }
+    },
+    "hellaswag_performance": {
+        "alloc_requests": 1283,
+        "free_requests": 0,
+        "allocated_mem": 4014039040,
+        "active_mem": 4014039040,
+        "inactive_mem": 270442496,
+        "reserved_mem": 4284481536,
+        "alloc_retries": 0
+    },
+    "arc_quality": {
+        "results": {
+            "ai2_arc": {
+                "acc,none": 0.6569980234656003,
+                "acc_stderr,none": 0.01065365530977205,
+                "acc_norm,none": 0.6812177520368646,
+                "acc_norm_stderr,none": 0.010514790274132624,
+                "alias": "ai2_arc"
+            },
+            "arc_challenge": {
+                "acc,none": 0.5017064846416383,
+                "acc_stderr,none": 0.01461130570505699,
+                "acc_norm,none": 0.5358361774744027,
+                "acc_norm_stderr,none": 0.01457381366473572,
+                "alias": " - arc_challenge"
+            },
+            "arc_easy": {
+                "acc,none": 0.8122895622895623,
+                "acc_stderr,none": 0.008012496274011485,
+                "acc_norm,none": 0.8265993265993266,
+                "acc_norm_stderr,none": 0.007768570412816704,
+                "alias": " - arc_easy"
+            }
+        },
+        "configs": {
+            "arc_challenge": {
+                "task": "arc_challenge",
+                "group": [
+                    "ai2_arc"
+                ],
+                "dataset_path": "allenai/ai2_arc",
+                "dataset_name": "ARC-Challenge",
+                "training_split": "train",
+                "validation_split": "validation",
+                "test_split": "test",
+                "doc_to_text": "Question: {{question}}\nAnswer:",
+                "doc_to_target": "{{choices.label.index(answerKey)}}",
+                "doc_to_choice": "{{choices.text}}",
+                "description": "",
+                "target_delimiter": " ",
+                "fewshot_delimiter": "\n\n",
+                "num_fewshot": 25,
+                "metric_list": [
+                    {
+                        "metric": "acc",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    },
+                    {
+                        "metric": "acc_norm",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    }
+                ],
+                "output_type": "multiple_choice",
+                "repeats": 1,
+                "should_decontaminate": true,
+                "doc_to_decontamination_query": "Question: {{question}}\nAnswer:",
+                "metadata": {
+                    "version": 1.0
+                }
+            },
+            "arc_easy": {
+                "task": "arc_easy",
+                "group": [
+                    "ai2_arc"
+                ],
+                "dataset_path": "allenai/ai2_arc",
+                "dataset_name": "ARC-Easy",
+                "training_split": "train",
+                "validation_split": "validation",
+                "test_split": "test",
+                "doc_to_text": "Question: {{question}}\nAnswer:",
+                "doc_to_target": "{{choices.label.index(answerKey)}}",
+                "doc_to_choice": "{{choices.text}}",
+                "description": "",
+                "target_delimiter": " ",
+                "fewshot_delimiter": "\n\n",
+                "num_fewshot": 25,
+                "metric_list": [
+                    {
+                        "metric": "acc",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    },
+                    {
+                        "metric": "acc_norm",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    }
+                ],
+                "output_type": "multiple_choice",
+                "repeats": 1,
+                "should_decontaminate": true,
+                "doc_to_decontamination_query": "Question: {{question}}\nAnswer:",
+                "metadata": {
+                    "version": 1.0
+                }
+            }
+        },
+        "n-shot": {
+            "ai2_arc": 25,
+            "arc_challenge": 25,
+            "arc_easy": 25
+        },
+        "config": {
+            "model": "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-gptq",
+            "model_args": null,
+            "batch_size": null,
+            "batch_sizes": [],
+            "device": "cuda:0",
+            "use_cache": "/proj/experiment/benchmarks/results",
+            "limit": null,
+            "bootstrap_iters": 100000,
+            "gen_kwargs": null
+        },
+        "versions": {
+            "ai2_arc": "N/A",
+            "arc_challenge": 1.0,
+            "arc_easy": 1.0
+        }
+    },
+    "arc_performance": {
+        "alloc_requests": 2566,
+        "free_requests": 1283,
+        "allocated_mem": 8028078080,
+        "active_mem": 4014039040,
+        "inactive_mem": 270442496,
+        "reserved_mem": 4284481536,
+        "alloc_retries": 0
+    },
+    "time_stamp": "2024-03-28 15:09:44"
+}{
+    "used_model": "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-gptq",
+    "config": {
+        "vocab_size": 32000,
+        "max_position_embeddings": 4096,
+        "hidden_size": 5120,
+        "intermediate_size": 13824,
+        "num_hidden_layers": 40,
+        "num_attention_heads": 40,
+        "num_key_value_heads": 40,
+        "hidden_act": "silu",
+        "initializer_range": 0.02,
+        "rms_norm_eps": 0.00001,
+        "pretraining_tp": 1,
+        "use_cache": true,
+        "rope_theta": 10000.0,
+        "rope_scaling": null,
+        "attention_bias": false,
+        "attention_dropout": 0.0,
+        "return_dict": true,
+        "output_hidden_states": false,
+        "output_attentions": false,
+        "torchscript": false,
+        "torch_dtype": "float16",
+        "use_bfloat16": false,
+        "tf_legacy_loss": false,
+        "pruned_heads": {},
+        "tie_word_embeddings": false,
+        "is_encoder_decoder": false,
+        "is_decoder": false,
+        "cross_attention_hidden_size": null,
+        "add_cross_attention": false,
+        "tie_encoder_decoder": false,
+        "max_length": 20,
+        "min_length": 0,
+        "do_sample": false,
+        "early_stopping": false,
+        "num_beams": 1,
+        "num_beam_groups": 1,
+        "diversity_penalty": 0.0,
+        "temperature": 1.0,
+        "top_k": 50,
+        "top_p": 1.0,
+        "typical_p": 1.0,
+        "repetition_penalty": 1.0,
+        "length_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "encoder_no_repeat_ngram_size": 0,
+        "bad_words_ids": null,
+        "num_return_sequences": 1,
+        "chunk_size_feed_forward": 0,
+        "output_scores": false,
+        "return_dict_in_generate": false,
+        "forced_bos_token_id": null,
+        "forced_eos_token_id": null,
+        "remove_invalid_values": false,
+        "exponential_decay_length_penalty": null,
+        "suppress_tokens": null,
+        "begin_suppress_tokens": null,
+        "architectures": [
+            "LlamaForCausalLM"
+        ],
+        "finetuning_task": null,
+        "id2label": {
+            "0": "LABEL_0",
+            "1": "LABEL_1"
+        },
+        "label2id": {
+            "LABEL_0": 0,
+            "LABEL_1": 1
+        },
+        "tokenizer_class": null,
+        "prefix": null,
+        "bos_token_id": 1,
+        "pad_token_id": null,
+        "eos_token_id": 2,
+        "sep_token_id": null,
+        "decoder_start_token_id": null,
+        "task_specific_params": null,
+        "problem_type": null,
+        "_name_or_path": "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-gptq",
+        "transformers_version": "4.36.2",
+        "model_type": "llama",
+        "quantization_config": {
+            "bits": 4,
+            "damp_percent": 0.01,
+            "desc_act": true,
+            "group_size": 128,
+            "is_marlin_format": false,
+            "model_file_base_name": "gptq_model-4bit-128g",
+            "model_name_or_path": "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-gptq",
+            "quant_method": "gptq",
+            "static_groups": false,
+            "sym": true,
+            "true_sequential": true
+        }
+    },
+    "full_generations": [
+        "[INST] <<SYS>>\nYou are a helpful research assistant. Your task is to write literature reviews based on a research question and scientific sources you are given.\n\nA literature review is a critical analysis of existing research on a topic. It aims to summarize, synthesize, and evaluate the current state of knowledge, identify gaps and limitations, and provide recommendations for future research.\n\n\nYour literature review should be structured as follows:\n\n### Introduction\nIntroduce the research question, explain the purpose and scope of your review, and provide an overview of the main themes or subtopics that you can extract from the sources.\n\n### Body\nDiscuss each theme or subtopic in detail, using evidence and examples from the sources. Summarize the main points, findings, and implications of the sources and identify the similarities, differences, gaps, and contradictions among them. Highlight the strengths and weaknesses of the existing research and how it contributes to the research question.\n\n### Conclusion\nSummarize the main findings and implications of your review, identify the limitations and gaps in the literature, and suggest directions for future research.\n\nProvide proper citations in your literature review (only Author & Year).\n<</SYS>>\nResearch Question: What is the current state of research on using LLMs to automate educational tasks, specifically through the lens of educational tasks, stakeholders, LLMs, and machine-learning tasks, what are the practical challenges of LLMs in automating educational tasks, specifically through the lens of technological readiness, model performance, and model replicability and what are the ethical challenges of LLMs in automating educational tasks, specifically through the lens of system transparency, privacy, equality, and beneficence?\nlee2023: This study investigates the application of large language models (LLMs), specifically GPT-3.5 and GPT-4, with Chain-of-Though (CoT)in the automatic scoring of student-written responses to science assessments. We focused on overcoming the challenges of accessibility, technical complexity, and lack of explainability that have previously limited the use of automatic assessment tools among researchers and educators. We used a testing dataset comprising six assessment tasks (three binomial and three trinomial) with 1,650 student responses. We employed six prompt engineering strategies, combining zero-shot or few-shot learning with CoT, either alone or alongside item stem and scoring rubrics. Results indicated that few-shot (acc = .67) outperformed zero-shot learning (acc = .60), with 12.6% increase. CoT, when used without item stem and scoring rubrics, did not significantly affect scoring accuracy (acc = .60). However, CoT prompting paired with contextual item stems and rubrics proved to be a significant contributor to scoring accuracy (13.44% increase for zero-shot; 3.7% increase for few-shot). Using a novel approach PPEAS, we found a more balanced accuracy across different proficiency categories, highlighting the importance of domain-specific reasoning in enhancing the effectiveness of LLMs in scoring tasks. Additionally, we also found that GPT-4 demonstrated superior performance over GPT-3.5 in various scoring tasks, showing 8.64% difference. The study revealed that the single-call strategy with GPT-4, particularly using greedy sampling, outperformed other approaches, including ensemble voting strategies. This study demonstrates the potential of LLMs in facilitating automatic scoring, emphasizing that CoT enhances accuracy, particularly when used with item stem and scoring rubrics.\nadewumi2023: We introduce a novel writing method called Probing Chain-of-Thought (ProCoT), which prevents students from cheating using a Large Language Model (LLM), such as ChatGPT, while enhancing their active learning through such models. LLMs have disrupted education and many other feilds. For fear of students cheating, many educationists have resorted to banning their use, as their outputs can be human-like and hard to detect in some cases. These LLMs are also known for hallucinations (i.e. fake “facts”). We conduct studies with ProCoT in two different courses with a combined total of about 66 students. The students in each course were asked to prompt an LLM of their choice with one question from a set of four and required to affirm or refute statements in the LLM output by using peer-reviewed references. The results show two things: (1) ProCoT stimulates creative/critical thinking and writing of students through engagement with LLMs when we compare the LLMsolely output to ProCoT output and (2) ProCoT can prevent cheating because of clear limitations in existing LLMs when we compare students’ ProCoT output to LLM ProCoT output. We also discover that most students prefer to give answers in fewer words than LLMs, which are typically verbose. The average word counts for students, ChatGPT (v3.5) and Phind (v8) are 208, 391 and 383, respectively.\ncobbe2021: State-of-the-art language models can match human performance on many tasks, but they still struggle to robustly perform multi-step mathematical reasoning. To diagnose the failures of current models and support research, we introduce GSM8K, a dataset of 8.5K high quality linguistically diverse grade school math word problems. We find that even the largest transformer models fail to achieve high test performance, despite the conceptual simplicity of this problem distribution. To increase performance, we propose training verifiers to judge the correctness of model completions. At test time, we generate many candidate solutions and select the one ranked highest by the verifier. We demonstrate that verification significantly improves performance on GSM8K, and we provide strong empirical evidence that verification scales more effectively with increased data than a finetuning baseline.\nhuang2022: Large Language Models (LLMs) have achieved excellent performances in various tasks. However, fine-tuning an LLM requires extensive supervision. Human, on the other hand, may improve their reasoning abilities by self-thinking without external inputs. In this work, we demonstrate that an LLM is also capable of self-improving with only unlabeled datasets. We use a pre-trained LLM to generate “high-confidence” rationale-augmented answers for unlabeled questions using Chain-of-Thought prompting and self-consistency, and fine-tune the LLM using those self-generated solutions as target outputs. We show that our approach improves the general reasoning ability of a 540B-parameter LLM (74.4%→82.1% on GSM8K, 78.2%→83.0% on DROP, 90.0%→94.4% on OpenBookQA, and 63.4%→67.9% on ANLI-A3) and achieves state-of-the-art-level performance, without any ground truth label. We conduct ablation studies and show that finetuning on reasoning is critical for self-improvement.\nyao2023: While large language models (LLMs) have demonstrated impressive performance across tasks in language understanding and interactive decision making, their abilities for reasoning (e.g. chain-of-thought prompting) and acting (e.g. action plan generation) have primarily been studied as separate topics. In this paper, we explore the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two: reasoning traces help the model induce, track, and update action plans as well as handle exceptions, while actions allow it to interface with and gather additional information from external sources such as knowledge bases or environments. We apply our approach, named ReAct, to a diverse set of language and decision making tasks and demonstrate its effectiveness over state-of-the-art baselines in addition to improved human interpretability and trustworthiness. Concretely, on question answering (HotpotQA) and fact verification (Fever), ReAct overcomes prevalent issues of hallucination and error propagation in chain-of-thought reasoning by interacting with a simple Wikipedia API, and generating human-like task-solving trajectories that are more interpretable than baselines without reasoning traces. Furthermore, on two interactive decision making benchmarks (ALFWorld and WebShop), ReAct outperforms imitation and reinforcement learning methods by an absolute success rate of 34% and 10% respectively, while being prompted with only one or two in-context examples.\nanishka2023: The emergence of Large language models (LLMs) is expected to have a major impact on education. This paper explores the potential of using ChatGPT, an LLM, as a virtual Teaching Assistant (TA) in an Introductory Programming Course. We evaluate ChatGPT’s capabilities by comparing its performance with that of human TAs in some TA functions. The TA functions which we focus on include (1) solving programming assignments, (2) grading student code submissions, and (3) providing feedback to undergraduate students in an introductory programming course. Firstly, we investigate how closely ChatGPT’s solutions align with those submitted by students. This analysis goes beyond code correctness and also considers code quality. Secondly, we assess ChatGPT’s proficiency in grading student code submissions using a given grading rubric and compare its performance with the grades assigned by human TAs. Thirdly, we analyze the quality and relevance of the feedback provided by ChatGPT. This evaluation considers how well ChatGPT addresses mistakes and offers suggestions for improvement in student solutions from both code correctness and code quality perspectives. We conclude with a discussion on the implications of integrating ChatGPT into computing education for automated grading, personalized learning experiences, and instructional support\nkojima2023: Pretrained large language models (LLMs) are widely used in many sub-fields of natural language processing (NLP) and generally known as excellent few-shot learners with task-specific exemplars. Notably, chain of thought (CoT) prompting, a recent technique for eliciting complex multi-step reasoning through step-bystep answer examples, achieved the state-of-the-art performances in arithmetics and symbolic reasoning, difficult system-2 tasks that do not follow the standard scaling laws for LLMs. While these successes are often attributed to LLMs’ ability for few-shot learning, we show that LLMs are decent zero-shot reasoners by simply adding “Let’s think step by step” before each answer. Experimental results demonstrate that our Zero-shot-CoT, using the same single prompt template, significantly outperforms zero-shot LLM performances on diverse benchmark reasoning tasks including arithmetics (MultiArith, GSM8K, AQUA-RAT, SVAMP), symbolic reasoning (Last Letter, Coin Flip), and other logical reasoning tasks (Date Understanding, Tracking Shuffled Objects), without any hand-crafted few-shot examples, e.g. increasing the accuracy on MultiArith from 17.7% to 78.7% and GSM8K from 10.4% to 40.7% with large-scale InstructGPT model (text-davinci002), as well as similar magnitudes of improvements with another off-the-shelf large model, 540B parameter PaLM. The versatility of this single prompt across very diverse reasoning tasks hints at untapped and understudied fundamental zero-shot capabilities of LLMs, suggesting high-level, multi-task broad cognitive capabilities may be extracted by simple prompting. We hope our work not only serves as the minimal strongest zero-shot baseline for the challenging reasoning benchmarks, but also highlights the importance of carefully exploring and analyzing the enormous zero-shot knowledge hidden inside LLMs before crafting finetuning datasets or few-shot exemplars.\nkasneci2023: Large language models represent a significant advancement in the field of AI. The underlying technology is key to further innovations and, despite critical views and even bans within communities and regions, large language models are here to stay. This commentary presents the potential benefits and challenges of educational applications of large language models, from student and teacher perspectives. We briefly discuss the current state of large language models and their applications. We then highlight how these models can be used to create educational content, improve student engagement and interaction, and personalize learning experiences. With regard to challenges, we argue that large language models in education require teachers and learners to develop sets of competencies and literacies necessary to both understand the technology as well as their limitations and unexpected brittleness of such systems. In addition, a clear strategy within educational systems and a clear pedagogical approach with a strong focus on critical thinking and strategies for fact checking are required to integrate and take full advantage of large language models in learning settings and teaching curricula. Other challenges such as the potential bias in the output, the need for continuous human oversight, and the potential for misuse are not unique to the application of AI in education. But we believe that, if handled sensibly, these challenges can offer insights and opportunities in education scenarios to acquaint students early on with potential societal biases, criticalities, and risks of AI applications. We conclude with recommendations for how to address these challenges and ensure that such models are used in a responsible and ethical manner in education.\nwei2023: We explore how generating a chain of thought—a series of intermediate reasoning steps—significantly improves the ability of large language models to perform complex reasoning. In particular, we show how such reasoning abilities emerge naturally in sufficiently large language models via a simple method called chain-ofthought prompting, where a few chain of thought demonstrations are provided as exemplars in prompting. Experiments on three large language models show that chain-of-thought prompting improves performance on a range of arithmetic, commonsense, and symbolic reasoning tasks. The empirical gains can be striking. For instance, prompting a PaLM 540B with just eight chain-of-thought exemplars achieves state-of-the-art accuracy on the GSM8K benchmark of math word problems, surpassing even finetuned GPT-3 with a verifier.\ndoughty2023: There is a constant need for educators to develop and maintain effective up-to-date assessments. While there is a growing body of research in computing education on utilizing large language models (LLMs) in generation and engagement with coding exercises, the use of LLMs for generating programming MCQs has not been extensively explored. We analyzed the capability of GPT-4 to produce multiple-choice questions (MCQs) aligned with specific learning objectives (LOs) from Python programming classes in higher education. Specifically, we developed an LLM-powered (GPT-4) system for generation of MCQs from high-level course context and module-level LOs. We evaluated 651 LLM-generated and 449 human-crafted MCQs aligned to 246 LOs from 6 Python courses. We found that GPT-4 was capable of producing MCQs with clear language, a single correct choice, and high-quality distractors. We also observed that the generated MCQs appeared to be wellaligned with the LOs. Our findings can be leveraged by educators wishing to take advantage of the state-of-the-art generative models to support MCQ authoring efforts.\nLets think step by step[/INST]  Introduction:\n\nThe use of large language models (LLMs) in educational tasks has gained significant attention in recent years. However, there are several practical challenges and ethical considerations that need to be addressed when using LLMs in automating educational tasks. This literature review aims to provide an overview of the current state of research on using LLMs in educational tasks, specifically focusing on the challenges and limitations of these models, as well as the potential ethical considerations.\n\nBody:\n\n1. Technical readiness:\n\nSeveral studies have shown that LLMs are not yet ready for widespread use in educational tasks. For example, Yao et al. (2023) found that even the largest transformer models struggle to robustly perform multi-step mathematical reasoning. Similarly, Anishka et al. (2023) found that ChatGPT, an LLM, was not able to solve programming assignments and grade student code submissions as accurately as human teaching assistants.\n\n2. Model performance:\n\nLLMs have been shown to perform well on some tasks, but their performance can be inconsistent and unreliable on others. For example, Cobbe et al. (2021) found that even the best-performing LLMs can fail to achieve high test performance on certain tasks. Additionally, Kojima et al. (2023) found that LLMs can be decent zero-shot reasoners, but their performance can be significantly improved with few-shot learning.\n\n3. Model replicability:\n\nThere is a lack of replicability in the performance of LLMs across different tasks and domains. For example, Huang et al. (2022) found that the performance of an LLM can vary significantly depending on the specific task and dataset used. This highlights the need for more research on the replicability of LLMs in educational tasks.\n\n4. Ethical considerations:\n\nThe use of LLMs in educational tasks raises several ethical considerations. For example, Kasneci et al. (2023) argue that LLMs in education require teachers and learners to develop sets of competencies and literacies necessary to understand the technology and its limitations. Additionally"
+    ],
+    "generations": [
+        "  Introduction:\n\nThe use of large language models (LLMs) in educational tasks has gained significant attention in recent years. However, there are several practical challenges and ethical considerations that need to be addressed when using LLMs in automating educational tasks. This literature review aims to provide an overview of the current state of research on using LLMs in educational tasks, specifically focusing on the challenges and limitations of these models, as well as the potential ethical considerations.\n\nBody:\n\n1. Technical readiness:\n\nSeveral studies have shown that LLMs are not yet ready for widespread use in educational tasks. For example, Yao et al. (2023) found that even the largest transformer models struggle to robustly perform multi-step mathematical reasoning. Similarly, Anishka et al. (2023) found that ChatGPT, an LLM, was not able to solve programming assignments and grade student code submissions as accurately as human teaching assistants.\n\n2. Model performance:\n\nLLMs have been shown to perform well on some tasks, but their performance can be inconsistent and unreliable on others. For example, Cobbe et al. (2021) found that even the best-performing LLMs can fail to achieve high test performance on certain tasks. Additionally, Kojima et al. (2023) found that LLMs can be decent zero-shot reasoners, but their performance can be significantly improved with few-shot learning.\n\n3. Model replicability:\n\nThere is a lack of replicability in the performance of LLMs across different tasks and domains. For example, Huang et al. (2022) found that the performance of an LLM can vary significantly depending on the specific task and dataset used. This highlights the need for more research on the replicability of LLMs in educational tasks.\n\n4. Ethical considerations:\n\nThe use of LLMs in educational tasks raises several ethical considerations. For example, Kasneci et al. (2023) argue that LLMs in education require teachers and learners to develop sets of competencies and literacies necessary to understand the technology and its limitations. Additionally"
+    ],
+    "generation_config": {
+        "do_sample": false,
+        "max_new_tokens": 500,
+        "pad_token_id": 2
+    },
+    "inference_time": [
+        340.446279848
+    ],
+    "prompt_length_in_tokens": [
+        3595
+    ],
+    "generation_length_in_tokens": [
+        501
+    ],
+    "ram": null,
+    "vram_alloc_requests": [
+        2826578
+    ],
+    "vram_free_requestst": [
+        2824694
+    ],
+    "vram_allocated_mem": [
+        78540704911360.0
+    ],
+    "vram_active_mem": [
+        7438862336.0
+    ],
+    "vram_inactive_mem": [
+        140244992.0
+    ],
+    "vram_reserved_mem": [
+        16592666624.0
+    ],
+    "vram_alloc_retries": [
+        0
+    ],
+    "input_prompt_length": [
+        3595
+    ],
+    "remaining_tokens": null,
+    "time_to_first_token": [
+        2.41590377
+    ],
+    "tokens_per_second": [
+        1.4821153229270585
+    ],
+    "scores": null,
+    "hellaswag_quality": {
+        "results": {
+            "hellaswag": {
+                "acc,none": 0.5927106154152559,
+                "acc_stderr,none": 0.004903254264177616,
+                "acc_norm,none": 0.7857996415056762,
+                "acc_norm_stderr,none": 0.004094279871733737,
+                "alias": "hellaswag"
+            }
+        },
+        "configs": {
+            "hellaswag": {
+                "task": "hellaswag",
+                "group": [
+                    "multiple_choice"
+                ],
+                "dataset_path": "hellaswag",
+                "training_split": "train",
+                "validation_split": "validation",
+                "process_docs": "def process_docs(dataset: datasets.Dataset) -> datasets.Dataset:\n    def _process_doc(doc):\n        ctx = doc[\"ctx_a\"] + \" \" + doc[\"ctx_b\"].capitalize()\n        out_doc = {\n            \"query\": preprocess(doc[\"activity_label\"] + \": \" + ctx),\n            \"choices\": [preprocess(ending) for ending in doc[\"endings\"]],\n            \"gold\": int(doc[\"label\"]),\n        }\n        return out_doc\n\n    return dataset.map(_process_doc)\n",
+                "doc_to_text": "{{query}}",
+                "doc_to_target": "{{label}}",
+                "doc_to_choice": "choices",
+                "description": "",
+                "target_delimiter": " ",
+                "fewshot_delimiter": "\n\n",
+                "num_fewshot": 10,
+                "metric_list": [
+                    {
+                        "metric": "acc",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    },
+                    {
+                        "metric": "acc_norm",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    }
+                ],
+                "output_type": "multiple_choice",
+                "repeats": 1,
+                "should_decontaminate": false,
+                "metadata": {
+                    "version": 1.0
+                }
+            }
+        },
+        "n-shot": {
+            "hellaswag": 10
+        },
+        "config": {
+            "model": "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-gptq",
+            "model_args": null,
+            "batch_size": null,
+            "batch_sizes": [],
+            "device": "cuda:0",
+            "use_cache": "/proj/experiment/benchmarks/results",
+            "limit": null,
+            "bootstrap_iters": 100000,
+            "gen_kwargs": null
+        },
+        "versions": {
+            "hellaswag": 1.0
+        }
+    },
+    "hellaswag_performance": {
+        "alloc_requests": 1603,
+        "free_requests": 0,
+        "allocated_mem": 7430199296,
+        "active_mem": 7430199296,
+        "inactive_mem": 73410560,
+        "reserved_mem": 7503609856,
+        "alloc_retries": 0
+    },
+    "arc_quality": {
+        "results": {
+            "ai2_arc": {
+                "acc,none": 0.6569980234656003,
+                "acc_stderr,none": 0.01065365530977205,
+                "acc_norm,none": 0.6812177520368646,
+                "acc_norm_stderr,none": 0.010514790274132624,
+                "alias": "ai2_arc"
+            },
+            "arc_challenge": {
+                "acc,none": 0.5017064846416383,
+                "acc_stderr,none": 0.01461130570505699,
+                "acc_norm,none": 0.5358361774744027,
+                "acc_norm_stderr,none": 0.01457381366473572,
+                "alias": " - arc_challenge"
+            },
+            "arc_easy": {
+                "acc,none": 0.8122895622895623,
+                "acc_stderr,none": 0.008012496274011485,
+                "acc_norm,none": 0.8265993265993266,
+                "acc_norm_stderr,none": 0.007768570412816704,
+                "alias": " - arc_easy"
+            }
+        },
+        "configs": {
+            "arc_challenge": {
+                "task": "arc_challenge",
+                "group": [
+                    "ai2_arc"
+                ],
+                "dataset_path": "allenai/ai2_arc",
+                "dataset_name": "ARC-Challenge",
+                "training_split": "train",
+                "validation_split": "validation",
+                "test_split": "test",
+                "doc_to_text": "Question: {{question}}\nAnswer:",
+                "doc_to_target": "{{choices.label.index(answerKey)}}",
+                "doc_to_choice": "{{choices.text}}",
+                "description": "",
+                "target_delimiter": " ",
+                "fewshot_delimiter": "\n\n",
+                "num_fewshot": 25,
+                "metric_list": [
+                    {
+                        "metric": "acc",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    },
+                    {
+                        "metric": "acc_norm",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    }
+                ],
+                "output_type": "multiple_choice",
+                "repeats": 1,
+                "should_decontaminate": true,
+                "doc_to_decontamination_query": "Question: {{question}}\nAnswer:",
+                "metadata": {
+                    "version": 1.0
+                }
+            },
+            "arc_easy": {
+                "task": "arc_easy",
+                "group": [
+                    "ai2_arc"
+                ],
+                "dataset_path": "allenai/ai2_arc",
+                "dataset_name": "ARC-Easy",
+                "training_split": "train",
+                "validation_split": "validation",
+                "test_split": "test",
+                "doc_to_text": "Question: {{question}}\nAnswer:",
+                "doc_to_target": "{{choices.label.index(answerKey)}}",
+                "doc_to_choice": "{{choices.text}}",
+                "description": "",
+                "target_delimiter": " ",
+                "fewshot_delimiter": "\n\n",
+                "num_fewshot": 25,
+                "metric_list": [
+                    {
+                        "metric": "acc",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    },
+                    {
+                        "metric": "acc_norm",
+                        "aggregation": "mean",
+                        "higher_is_better": true
+                    }
+                ],
+                "output_type": "multiple_choice",
+                "repeats": 1,
+                "should_decontaminate": true,
+                "doc_to_decontamination_query": "Question: {{question}}\nAnswer:",
+                "metadata": {
+                    "version": 1.0
+                }
+            }
+        },
+        "n-shot": {
+            "ai2_arc": 25,
+            "arc_challenge": 25,
+            "arc_easy": 25
+        },
+        "config": {
+            "model": "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-gptq",
+            "model_args": null,
+            "batch_size": null,
+            "batch_sizes": [],
+            "device": "cuda:0",
+            "use_cache": "/proj/experiment/benchmarks/results",
+            "limit": null,
+            "bootstrap_iters": 100000,
+            "gen_kwargs": null
+        },
+        "versions": {
+            "ai2_arc": "N/A",
+            "arc_challenge": 1.0,
+            "arc_easy": 1.0
+        }
+    },
+    "arc_performance": {
+        "alloc_requests": 3206,
+        "free_requests": 1603,
+        "allocated_mem": 14860398592,
+        "active_mem": 7430199296,
+        "inactive_mem": 73410560,
+        "reserved_mem": 7503609856,
+        "alloc_retries": 0
+    },
+    "time_stamp": "2024-03-28 15:31:14"
 }
