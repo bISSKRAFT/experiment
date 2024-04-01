@@ -21,6 +21,8 @@ class Llama2Locals(Enum):
     llama_2_13b_chat_awq = "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-awq"
     llama_2_7b_chat_gptq = "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-gptq"
     llama_2_13b_chat_gptq = "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-gptq"
+    llama_2_7b_chat_8bit_bnb = "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-bnb"
+    llama_2_13b_chat_8bit_bnb = "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-bnb"
 
 
 
@@ -39,6 +41,7 @@ class Llama2Local(InferenceLLM):
         if params is None:
             params = {}
         self.checkpoint = checkpoint_model
+        print("used parameters:" ,params)
         self.model = factory(checkpoint_model,**params, config=config)
         self.tokenizer = AutoTokenizer.from_pretrained(checkpoint_tokenizer, trust_remote_code=True)
         self.config = self.model.config.to_dict()
@@ -216,6 +219,24 @@ class Llama2LocalFactory(InferenceLLMFactory):
                     "trust_remote_code": True,
                     "safetensors": True,
                     "disable_exllamav2": True
+                },
+                config=config
+            ))
+            return cls.get_instance()
+        if model in [
+            Llama2Locals.llama_2_7b_chat_8bit_bnb,
+            Llama2Locals.llama_2_13b_chat_8bit_bnb
+            ]:
+            instance_check = cls._check_for_instance(model)
+            if instance_check:
+                return instance_check
+            cls._flush()
+            cls.set_instance(Llama2Local(
+                AutoModelForCausalLM.from_pretrained,
+                model.value,
+                model.value,
+                params={
+                    "device_map": "cuda:2",
                 },
                 config=config
             ))
