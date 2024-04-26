@@ -83,14 +83,14 @@ class InferenceLLM(BaseLLM, ABC):
         ) -> dict:
         """Get the model config from the checkpoint"""
 
-    @abstractmethod
-    def _get_model(
-                self, 
-                checkpoint: str, 
-                config: dict, 
-                compiling: bool = False
-        ):
-        """Get the model from the checkpoint"""
+    # @abstractmethod
+    # def _get_model(
+    #             self, 
+    #             checkpoint: str, 
+    #             config: dict, 
+    #             compiling: bool = False
+    #     ):
+    #     """Get the model from the checkpoint"""
 
     @abstractmethod
     def _call(
@@ -114,9 +114,9 @@ class InferenceLLM(BaseLLM, ABC):
 
         # TODO: extraction of generation move to GenerationResult (+test)
         for prompt in prompts:
-            start_time = time.process_time_ns()
+            start_time = time.perf_counter_ns()
             gen = self._call(prompt, generation_config)
-            inference_time.append((time.process_time_ns() - start_time) / 10**9)
+            inference_time.append((time.perf_counter_ns() - start_time) / 10**9)
             if callbacks:
                 mem_report.append(callbacks.memory_report())
             full_generations.append(gen)
@@ -140,3 +140,8 @@ class InferenceLLM(BaseLLM, ABC):
             vram_alloc_retries=organized_mem_report.get("alloc_retries", None),
         )
         
+    # def _get_current_device(self):
+    #     next(self.model.parameters()).device
+    # 
+    # def _get_memory_footprint(self):
+    #     self.model.get_memory_footprint()

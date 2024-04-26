@@ -1,8 +1,11 @@
-import copy
+import os
 from enum import Enum
 import json
 import time
 from typing import Iterable, List, Optional, Tuple
+
+from responses import start
+import transformers
 from src.models.llms.factories import InferenceLLMFactory
 from src.models.data.base import BaseDatasetMixin
 from src.prompts.few_shot import FewShotTemplate
@@ -19,8 +22,10 @@ from src.models.quality.base import QualityScorerBase
 from src.utils.kpis.performance import calculate_tokens_per_second
 from src.utils.profiler.memory_profiler import MemoryProfilerCallback
 
-def _create_hf_eval_lm(checkpoint_or_path: str) -> HFLM:
-    return HFLM(pretrained=checkpoint_or_path)
+
+
+def _create_hf_eval_lm(initalized_pretrained: transformers.PreTrainedModel) -> HFLM:
+    return HFLM(pretrained=initalized_pretrained)
 
 
 def _flush_eval_lm(lm_ref) -> None:
@@ -46,8 +51,7 @@ def _create_benchmark(task: str, lm: HFLM, n_fewshot: int = 1):
         model=lm,
         tasks=task,
         num_fewshot=n_fewshot,
-        use_cache='/proj/experiment/benchmarks/results',
-        device='cuda:0',
+        #use_cache='/proj/experiment/benchmarks/results',
         task_manager=task_manager
     )
     return res
@@ -109,8 +113,8 @@ def preprocess_dataset(
     
 
 def run_benchmark(
-        llm_factory: InferenceLLMFactory,
-        model: Enum,
+        llm: InferenceLLM,
+        do_lm_harness: bool,
         prompt: str,
         scorer: Optional[QualityScorerBase],
         reference: Optional[str],
@@ -125,32 +129,34 @@ def run_benchmark(
     :param generation_config: The generation config to use.
     :return: The benchmark result.
     """
-    assert model.value is not None
+    assert llm is not None
 
-    # careful: this creates a new instance of the model
-    eval_harness_lm = _create_hf_eval_lm(model.value)
+    hellaswag_res = None
+    mem_report_hellaswag = None
+    arc_res = None
+    mem_report_arc = None
 
-    callback = MemoryProfilerCallback("lm_harness")
-    hellaswag_res = _do_benchmark('hellaswag', eval_harness_lm, 10)
-    mem_report_hellaswag = callback.memory_report()
+    if do_lm_harness:
+        # careful: this creates a new instance of the model
+        print("[LM-HARNESS]: creating lm")
+        try: 
+            eval_harness_lm = _create_hf_eval_lm(llm.model)
+        except Exception as e:
+            print(f"[ATTEMPT] Harness: Failed to create model: {e}")
+            eval_harness_lm = _create_hf_eval_lm(llm.model.model)
 
-    del eval_harness_lm
-    gc.collect()
-    torch.cuda.empty_cache()
-    torch.cuda.reset_peak_memory_stats()
+        #print("[LM-HARNESS] LM DEVICE: ", eval_harness_lm.device_map)
+        print("[LM-HARNESS]: running hellaswag")
+        callback = MemoryProfilerCallback("lm_harness")
+        hellaswag_res = _do_benchmark('hellaswag', eval_harness_lm, 10)
+        mem_report_hellaswag = callback.memory_report()
+        print("[LM-HARNESS]: finished hellaswag")
 
-    eval_harness_lm = _create_hf_eval_lm(model.value)
-    arc_res = _do_benchmark('ai2_arc', eval_harness_lm, 25)
-    mem_report_arc = callback.memory_report()
+        print("[LM-HARNESS]: running arc")
+        arc_res = _do_benchmark('ai2_arc', eval_harness_lm, 25)
+        mem_report_arc = callback.memory_report()
+        print("[LM-HARNESS]: finished arc")
 
-    del eval_harness_lm
-    gc.collect()
-    torch.cuda.empty_cache()
-    torch.cuda.reset_peak_memory_stats()
-
-    time.sleep(5)
-
-    llm = llm_factory.create(model)
 
     # caluclate prompt length
     print("Preprocessing...")

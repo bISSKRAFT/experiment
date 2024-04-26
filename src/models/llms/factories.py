@@ -21,7 +21,7 @@ class InferenceLLMFactory(ABC):
 
     @classmethod
     def _flush(cls):
-        print("Llama2LocalFactory: FLUSHING INSTANCE...")
+        print("[InferenceLLMFactory]: FLUSHING INSTANCE...")
         cls._INSTANCE = None
         gc.collect()
         torch.cuda.empty_cache()

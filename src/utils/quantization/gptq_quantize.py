@@ -9,8 +9,8 @@ import torch.nn as nn
 from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
 
 
-pretrained_model_dir = "meta-llama/Llama-2-7b-chat-hf"
-quantized_model_dir = '/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-gptq'
+pretrained_model_dir = "google/gemma-7b-it"
+quantized_model_dir = '/modelcache/leos_models/google/gemma-7b-it-gptq'
 
 
 # os.makedirs(quantized_model_dir, exist_ok=True)
