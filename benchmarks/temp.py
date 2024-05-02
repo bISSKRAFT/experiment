@@ -1,6 +1,5 @@
 # MODIFIYING PYTHON PATH
 import sys
-import os
 
 
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -19,24 +18,18 @@ import re
 import time
 import gc
 import torch    
-from transformers import AutoModelForCausalLM
 
 from src.llms.llama2 import Llama2LocalFactory, Llama2Locals
 from src.llms.mistral import MistralLocals, MistralLocalFactory
 from src.llms.gemma import GemmaLocals, GemmaLocalFactory
-from src.llms.opt import OptLocals, OptLocalFactory
 
 from src.llms.config.generation_config import GenerationConfigMixin
 from src.prompts.few_shot import FewShotTemplate
 from src.prompts.prompt import PromptTemplate
-from src.utils.profiler.memory_profiler import MemoryProfilerCallback
-from src.utils.kpis.performance import calculate_tokens_per_second
-from src.quality.rouge_scorer import RougeQualityScorer
-from src.data.hf_datasets import HellaSwagDataset
 
 import benchmarks.data.prompts.prefix.roles as roles
 import benchmarks.data.prompts.prefix.instructions as instructions
-from benchmarks.run import run_benchmark, preprocess_dataset
+from benchmarks.run import run_benchmark
 
 start = time.perf_counter()
 
@@ -66,12 +59,12 @@ assert len(data) == 10
 # - create final prompt
 
 
-#RESEARCH_ASSISTENT = "[INST] <<SYS>>" + roles.RESEARCH_ASSISTENT
+RESEARCH_ASSISTENT = "[INST] <<SYS>>" + roles.RESEARCH_ASSISTENT
 #RESEARCH_ASSISTENT = "<bos><start_of_turn>user\n" + roles.RESEARCH_ASSISTENT
-RESEARCH_ASSISTENT = roles.RESEARCH_ASSISTENT
+#RESEARCH_ASSISTENT = roles.RESEARCH_ASSISTENT
 
-#LITERATURE_REVIEW = instructions.LITERATURE_REVIEW + "<</SYS>>"
-LITERATURE_REVIEW = instructions.LITERATURE_REVIEW
+LITERATURE_REVIEW = instructions.LITERATURE_REVIEW + "<</SYS>>"
+#LITERATURE_REVIEW = instructions.LITERATURE_REVIEW
 
 RESEARCH_ASSISTENT_QUESTION = str.join("\n", [RESEARCH_ASSISTENT, LITERATURE_REVIEW, "Research Question: {research_question}"])
 
@@ -101,12 +94,12 @@ prompt = final_prompt.format(
     research_question="What is the current state of research on using LLMs to automate educational tasks, specifically through the lens of educational tasks, stakeholders, LLMs, and machine-learning tasks, what are the practical challenges of LLMs in automating educational tasks, specifically through the lens of technological readiness, model performance, and model replicability and what are the ethical challenges of LLMs in automating educational tasks, specifically through the lens of system transparency, privacy, equality, and beneficence?"
 )
 
-#prompt = prompt + "[/INST]"
+prompt = prompt + "[/INST]"
 #prompt = prompt + "<end_of_turn>\n<start_of_turn>model"
 
 # SETUP: load llm
-factory = OptLocalFactory()
-model = OptLocals.opt_13b
+factory = Llama2LocalFactory()
+model = Llama2Locals.llama_2_13b_chat_speculative_decoding
 
 for attempt in range(3):
         try:
@@ -133,9 +126,9 @@ result =run_benchmark(
 )
 
 #DO: Save 
-# with open("/proj/experiment/benchmarks/results/benchmarks.json", "a") as f:
-#     json_sr = result.model_dump_json(indent=4)
-#     f.write(json_sr)
+with open("/proj/experiment/benchmarks/results/benchmarks.json", "a") as f:
+    json_sr = result.model_dump_json(indent=4)
+    f.write(json_sr)
 
 end = time.perf_counter() - start
 print(f"Done in {end}!")

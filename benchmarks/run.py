@@ -1,19 +1,12 @@
-import os
-from enum import Enum
-import json
 import time
-from typing import Iterable, List, Optional, Tuple
-
-from responses import start
+from typing import List, Optional, Tuple
+import lm_eval
+from lm_eval.models.huggingface import HFLM
 import transformers
-from src.models.llms.factories import InferenceLLMFactory
+
 from src.models.data.base import BaseDatasetMixin
 from src.prompts.few_shot import FewShotTemplate
 from src.prompts.prompt import PromptTemplate
-import lm_eval
-from lm_eval.models.huggingface import HFLM
-import gc
-import torch
 
 from src.llms.config.generation_config import GenerationConfigMixin
 from src.models.llms.base import InferenceLLM
@@ -27,12 +20,12 @@ from src.utils.profiler.memory_profiler import MemoryProfilerCallback
 def _create_hf_eval_lm(initalized_pretrained: transformers.PreTrainedModel) -> HFLM:
     return HFLM(pretrained=initalized_pretrained)
 
-
-def _flush_eval_lm(lm_ref) -> None:
-    del lm_ref
-    gc.collect()
-    torch.cuda.empty_cache()
-    torch.cuda.reset_peak_memory_stats()
+# DEPRACTED
+# def _flush_eval_lm(lm_ref) -> None:
+#     del lm_ref
+#     gc.collect()
+#     torch.cuda.empty_cache()
+#     torch.cuda.reset_peak_memory_stats()
 
 
 def _do_benchmark(benchmark: str, llm: HFLM, n_fewshot: int = 1):
@@ -56,7 +49,7 @@ def _create_benchmark(task: str, lm: HFLM, n_fewshot: int = 1):
     )
     return res
 
-
+# DEPRECATED
 def preprocess_dataset(
         dataset: BaseDatasetMixin,
         prefix: PromptTemplate,
@@ -137,7 +130,6 @@ def run_benchmark(
     mem_report_arc = None
 
     if do_lm_harness:
-        # careful: this creates a new instance of the model
         print("[LM-HARNESS]: creating lm")
         try: 
             eval_harness_lm = _create_hf_eval_lm(llm.model)
@@ -145,7 +137,6 @@ def run_benchmark(
             print(f"[ATTEMPT] Harness: Failed to create model: {e}")
             eval_harness_lm = _create_hf_eval_lm(llm.model.model)
 
-        #print("[LM-HARNESS] LM DEVICE: ", eval_harness_lm.device_map)
         print("[LM-HARNESS]: running hellaswag")
         callback = MemoryProfilerCallback("lm_harness")
         hellaswag_res = _do_benchmark('hellaswag', eval_harness_lm, 10)
@@ -166,7 +157,7 @@ def run_benchmark(
     print("[REMAINING TOKENS]:          ", remaining_tokens)
     print("done.\n\n")
 
-    # calculate pre generation time
+    # calculate Time To First Token
     print("Pre generation...")
     pre_generation_config = GenerationConfigMixin(max_new_tokens=1)
     pre_gen_res = llm.invoke(prompt,generation_config=pre_generation_config)
