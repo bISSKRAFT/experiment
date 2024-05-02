@@ -33,4 +33,5 @@ class InferenceLLMFactory(ABC):
 
     @classmethod
     def set_instance(cls, instance: InferenceLLM):
+        print("[InferenceLLMFactory]: SETTING INSTANCE: ", instance.model_name)
         cls._INSTANCE = instance

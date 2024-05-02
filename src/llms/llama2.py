@@ -105,7 +105,7 @@ class Llama2LocalSpeculativeDeoding(Llama2Local):
                  params: Optional[Dict[str, Any]] = None,
                  model_name: Optional[str] = None):
         super().__init__(factory, checkpoint_model, checkpoint_tokenizer, config, params, model_name)
-        support_model_ckpt = "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-awq"
+        support_model_ckpt = "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-bnb"
         self.support_model = AutoModelForCausalLM.from_pretrained(support_model_ckpt, device_map="auto")
         self.config["support_model"] = support_model_ckpt
         print("Constructor: ", self.__class__, "Support model: ", support_model_ckpt)
