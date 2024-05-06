@@ -30,6 +30,8 @@ class Llama2Locals(Enum):
     llama_2_13b_chat_pruning_2_4 = "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-2:4"
     llama_2_7b_chat_pruning_4_8 = "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-4:8"
     llama_2_13b_chat_pruning_4_8 = "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-4:8"
+    llama_2_7b_chat_pruning_unstructured_sparsegpt = "/modelcache/leos_models/meta-llama/Llama-2-7b-chat-hf-unstructured_sparseGPT"
+    llama_2_13b_chat_pruning_unstructured_sparsegpt = "/modelcache/leos_models/meta-llama/Llama-2-13b-chat-hf-unstructured_sparseGPT"
     llama_2_7b_chat_speculative_decoding = "meta-llama/Llama-2-7b-chat-hf-speculative-decoding"
     llama_2_13b_chat_speculative_decoding = "meta-llama/Llama-2-13b-chat-hf-speculative-decoding"
     llama_2_7b_chat_flash_att= "meta-llama/Llama-2-7b-chat-hf-flash-att"
@@ -284,7 +286,9 @@ class Llama2LocalFactory(InferenceLLMFactory):
             return cls.get_instance()
         if model in [
             Llama2Locals.llama_2_7b_chat_pruning_unstructured,
+            Llama2Locals.llama_2_7b_chat_pruning_unstructured_sparsegpt,
             Llama2Locals.llama_2_13b_chat_pruning_unstructured,
+            Llama2Locals.llama_2_13b_chat_pruning_unstructured_sparsegpt,
             Llama2Locals.llama_2_7b_chat_pruning_2_4,
             Llama2Locals.llama_2_13b_chat_pruning_2_4,
             Llama2Locals.llama_2_7b_chat_pruning_4_8,

@@ -1,5 +1,6 @@
 # MODIFIYING PYTHON PATH
 import sys
+import os
 
 
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -98,8 +99,8 @@ prompt = prompt + "[/INST]"
 #prompt = prompt + "<end_of_turn>\n<start_of_turn>model"
 
 # SETUP: load llm
-factory = Llama2LocalFactory()
-model = Llama2Locals.llama_2_13b_chat_speculative_decoding
+factory = MistralLocalFactory()
+model = MistralLocals.mistral_7b_instruct_speculative_decoding
 
 for attempt in range(3):
         try:

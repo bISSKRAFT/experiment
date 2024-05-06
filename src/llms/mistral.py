@@ -15,6 +15,7 @@ class MistralLocals(Enum):
     mistral_7b_instruct_awq = "/modelcache/leos_models/mistral/mistralai/Mistral-7B-Instruct-v0.2-awq"
     mistral_7b_instruct_bnb = "/modelcache/leos_models/mistral/mistralai/Mistral-7B-Instruct-v0.2-bnb"
     mistral_7b_instruct_flash_attn = "mistralai/Mistral-7B-Instruct-v0.2-flash_attn"
+    mistral_7b_instruct_speculative_decoding = "mistralai/Mistral-7B-Instruct-v0.2-speculative_decoding"
 
 
 class MistralLocal(InferenceLLM):
@@ -117,6 +118,44 @@ class MistralLocalAwq(MistralLocal):
         return self.tokenizer.batch_decode(output_tokens, skip_special_tokens=True)[0]
 
 
+class MistralLocalSpeculativeDeoding(MistralLocal):
+
+    def __init__(self,
+                 factory: Callable, 
+                 checkpoint_model: str,
+                 checkpoint_tokenizer: str,
+                 config: Optional[AutoConfig] = None, 
+                 params: Optional[Dict[str, Any]] = None,
+                 model_name: Optional[str] = None):
+        super().__init__(factory, checkpoint_model, checkpoint_tokenizer, config, params, model_name)
+        support_model_ckpt = "/modelcache/leos_models/mistral/mistralai/Mistral-7B-Instruct-v0.2-bnb"
+        self.support_model = AutoModelForCausalLM.from_pretrained(support_model_ckpt, device_map="auto")
+        self.config["support_model"] = support_model_ckpt
+        print("Constructor: ", self.__class__, "Support model: ", support_model_ckpt)
+    
+    def _tokenize(self, sequence: List[str] | str) -> BatchEncoding:
+        if not isinstance(sequence, str) and not isinstance(sequence, list):
+            raise TypeError("sequences must be a string or list of strings")
+        return self.tokenizer(sequence, return_tensors="pt")
+    
+    def _call(self, prompt: str, generation_config: Optional[GenerationConfigMixin]) -> str:
+        if generation_config is None:
+            generation_config = GenerationConfigMixin()
+        generation_config["pad_token_id"] = self.tokenizer.eos_token_id
+        tokens = self._tokenize(prompt).to("cuda")
+        output_tokens = self.model.generate(
+            **tokens, 
+            assistant_model=self.support_model, 
+            generation_config=generation_config.to_hf_generation_config())
+        return self.tokenizer.batch_decode(output_tokens, skip_special_tokens=True)[0]
+    
+    def _get_prompt_length_in_tokens(self, prompts: List[str] | str) -> List[int]:
+        if isinstance(prompts, str):
+            prompts = [prompts]
+        tokens = self._tokenize(prompts).input_ids
+        return [len(token) for token in tokens]
+
+
 class MistralLocalFactory(InferenceLLMFactory):
 
     @classmethod
@@ -199,6 +238,24 @@ class MistralLocalFactory(InferenceLLMFactory):
                     "torch_dtype": torch.bfloat16,
                     "attn_implementation": "flash_attention_2",
                     },
+                config=config,
+                model_name=model.value
+            ))
+            return cls.get_instance()
+        if model in [
+            MistralLocals.mistral_7b_instruct_speculative_decoding
+            ]:
+            instance_check = cls._check_for_instance(model)
+            if instance_check:
+                return instance_check
+            cls._flush()
+            cls.set_instance(MistralLocalSpeculativeDeoding(
+                AutoModelForCausalLM.from_pretrained,
+                MistralLocals.mistral_7b_instruct.value,
+                MistralLocals.mistral_7b_instruct.value,
+                params={
+                    "device_map": "auto",
+                },
                 config=config,
                 model_name=model.value
             ))
