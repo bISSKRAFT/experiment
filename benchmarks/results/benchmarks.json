@@ -11214,4 +11214,145 @@
     "arc_quality": null,
     "arc_performance": null,
     "time_stamp": "2024-05-06 20:24:03"
-}]
+}]{
+    "used_model": "mistralai/Mistral-7B-Instruct-v0.2-speculative_decoding",
+    "config": {
+        "vocab_size": 32000,
+        "max_position_embeddings": 32768,
+        "hidden_size": 4096,
+        "intermediate_size": 14336,
+        "num_hidden_layers": 32,
+        "num_attention_heads": 32,
+        "sliding_window": null,
+        "num_key_value_heads": 8,
+        "hidden_act": "silu",
+        "initializer_range": 0.02,
+        "rms_norm_eps": 0.00001,
+        "use_cache": true,
+        "rope_theta": 1000000.0,
+        "attention_dropout": 0.0,
+        "return_dict": true,
+        "output_hidden_states": false,
+        "output_attentions": false,
+        "torchscript": false,
+        "torch_dtype": "bfloat16",
+        "use_bfloat16": false,
+        "tf_legacy_loss": false,
+        "pruned_heads": {},
+        "tie_word_embeddings": false,
+        "chunk_size_feed_forward": 0,
+        "is_encoder_decoder": false,
+        "is_decoder": false,
+        "cross_attention_hidden_size": null,
+        "add_cross_attention": false,
+        "tie_encoder_decoder": false,
+        "max_length": 20,
+        "min_length": 0,
+        "do_sample": false,
+        "early_stopping": false,
+        "num_beams": 1,
+        "num_beam_groups": 1,
+        "diversity_penalty": 0.0,
+        "temperature": 1.0,
+        "top_k": 50,
+        "top_p": 1.0,
+        "typical_p": 1.0,
+        "repetition_penalty": 1.0,
+        "length_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "encoder_no_repeat_ngram_size": 0,
+        "bad_words_ids": null,
+        "num_return_sequences": 1,
+        "output_scores": false,
+        "return_dict_in_generate": false,
+        "forced_bos_token_id": null,
+        "forced_eos_token_id": null,
+        "remove_invalid_values": false,
+        "exponential_decay_length_penalty": null,
+        "suppress_tokens": null,
+        "begin_suppress_tokens": null,
+        "architectures": [
+            "MistralForCausalLM"
+        ],
+        "finetuning_task": null,
+        "id2label": {
+            "0": "LABEL_0",
+            "1": "LABEL_1"
+        },
+        "label2id": {
+            "LABEL_0": 0,
+            "LABEL_1": 1
+        },
+        "tokenizer_class": null,
+        "prefix": null,
+        "bos_token_id": 1,
+        "pad_token_id": null,
+        "eos_token_id": 2,
+        "sep_token_id": null,
+        "decoder_start_token_id": null,
+        "task_specific_params": null,
+        "problem_type": null,
+        "_name_or_path": "mistralai/Mistral-7B-Instruct-v0.2",
+        "transformers_version": "4.38.2",
+        "model_type": "mistral",
+        "support_model": "/modelcache/leos_models/mistral/mistralai/Mistral-7B-Instruct-v0.2-awq"
+    },
+    "full_generations": [
+        "[INST] <<SYS>>\nYou are a helpful research assistant. Your task is to write literature reviews based on a research question and scientific sources you are given.\n\nA literature review is a critical analysis of existing research on a topic. It aims to summarize, synthesize, and evaluate the current state of knowledge, identify gaps and limitations, and provide recommendations for future research.\n\n\nYour literature review should be structured as follows:\n\n### Introduction\nIntroduce the research question, explain the purpose and scope of your review, and provide an overview of the main themes or subtopics that you can extract from the sources.\n\n### Body\nDiscuss each theme or subtopic in detail, using evidence and examples from the sources. Summarize the main points, findings, and implications of the sources and identify the similarities, differences, gaps, and contradictions among them. Highlight the strengths and weaknesses of the existing research and how it contributes to the research question.\n\n### Conclusion\nSummarize the main findings and implications of your review, identify the limitations and gaps in the literature, and suggest directions for future research.\n\nProvide proper citations in your literature review (only Author & Year).\n<</SYS>>\nResearch Question: What is the current state of research on using LLMs to automate educational tasks, specifically through the lens of educational tasks, stakeholders, LLMs, and machine-learning tasks, what are the practical challenges of LLMs in automating educational tasks, specifically through the lens of technological readiness, model performance, and model replicability and what are the ethical challenges of LLMs in automating educational tasks, specifically through the lens of system transparency, privacy, equality, and beneficence?\nlee2023: This study investigates the application of large language models (LLMs), specifically GPT-3.5 and GPT-4, with Chain-of-Though (CoT)in the automatic scoring of student-written responses to science assessments. We focused on overcoming the challenges of accessibility, technical complexity, and lack of explainability that have previously limited the use of automatic assessment tools among researchers and educators. We used a testing dataset comprising six assessment tasks (three binomial and three trinomial) with 1,650 student responses. We employed six prompt engineering strategies, combining zero-shot or few-shot learning with CoT, either alone or alongside item stem and scoring rubrics. Results indicated that few-shot (acc = .67) outperformed zero-shot learning (acc = .60), with 12.6% increase. CoT, when used without item stem and scoring rubrics, did not significantly affect scoring accuracy (acc = .60). However, CoT prompting paired with contextual item stems and rubrics proved to be a significant contributor to scoring accuracy (13.44% increase for zero-shot; 3.7% increase for few-shot). Using a novel approach PPEAS, we found a more balanced accuracy across different proficiency categories, highlighting the importance of domain-specific reasoning in enhancing the effectiveness of LLMs in scoring tasks. Additionally, we also found that GPT-4 demonstrated superior performance over GPT-3.5 in various scoring tasks, showing 8.64% difference. The study revealed that the single-call strategy with GPT-4, particularly using greedy sampling, outperformed other approaches, including ensemble voting strategies. This study demonstrates the potential of LLMs in facilitating automatic scoring, emphasizing that CoT enhances accuracy, particularly when used with item stem and scoring rubrics.\nadewumi2023: We introduce a novel writing method called Probing Chain-of-Thought (ProCoT), which prevents students from cheating using a Large Language Model (LLM), such as ChatGPT, while enhancing their active learning through such models. LLMs have disrupted education and many other feilds. For fear of students cheating, many educationists have resorted to banning their use, as their outputs can be human-like and hard to detect in some cases. These LLMs are also known for hallucinations (i.e. fake “facts”). We conduct studies with ProCoT in two different courses with a combined total of about 66 students. The students in each course were asked to prompt an LLM of their choice with one question from a set of four and required to affirm or refute statements in the LLM output by using peer-reviewed references. The results show two things: (1) ProCoT stimulates creative/critical thinking and writing of students through engagement with LLMs when we compare the LLMsolely output to ProCoT output and (2) ProCoT can prevent cheating because of clear limitations in existing LLMs when we compare students’ ProCoT output to LLM ProCoT output. We also discover that most students prefer to give answers in fewer words than LLMs, which are typically verbose. The average word counts for students, ChatGPT (v3.5) and Phind (v8) are 208, 391 and 383, respectively.\ncobbe2021: State-of-the-art language models can match human performance on many tasks, but they still struggle to robustly perform multi-step mathematical reasoning. To diagnose the failures of current models and support research, we introduce GSM8K, a dataset of 8.5K high quality linguistically diverse grade school math word problems. We find that even the largest transformer models fail to achieve high test performance, despite the conceptual simplicity of this problem distribution. To increase performance, we propose training verifiers to judge the correctness of model completions. At test time, we generate many candidate solutions and select the one ranked highest by the verifier. We demonstrate that verification significantly improves performance on GSM8K, and we provide strong empirical evidence that verification scales more effectively with increased data than a finetuning baseline.\nhuang2022: Large Language Models (LLMs) have achieved excellent performances in various tasks. However, fine-tuning an LLM requires extensive supervision. Human, on the other hand, may improve their reasoning abilities by self-thinking without external inputs. In this work, we demonstrate that an LLM is also capable of self-improving with only unlabeled datasets. We use a pre-trained LLM to generate “high-confidence” rationale-augmented answers for unlabeled questions using Chain-of-Thought prompting and self-consistency, and fine-tune the LLM using those self-generated solutions as target outputs. We show that our approach improves the general reasoning ability of a 540B-parameter LLM (74.4%→82.1% on GSM8K, 78.2%→83.0% on DROP, 90.0%→94.4% on OpenBookQA, and 63.4%→67.9% on ANLI-A3) and achieves state-of-the-art-level performance, without any ground truth label. We conduct ablation studies and show that finetuning on reasoning is critical for self-improvement.\nyao2023: While large language models (LLMs) have demonstrated impressive performance across tasks in language understanding and interactive decision making, their abilities for reasoning (e.g. chain-of-thought prompting) and acting (e.g. action plan generation) have primarily been studied as separate topics. In this paper, we explore the use of LLMs to generate both reasoning traces and task-specific actions in an interleaved manner, allowing for greater synergy between the two: reasoning traces help the model induce, track, and update action plans as well as handle exceptions, while actions allow it to interface with and gather additional information from external sources such as knowledge bases or environments. We apply our approach, named ReAct, to a diverse set of language and decision making tasks and demonstrate its effectiveness over state-of-the-art baselines in addition to improved human interpretability and trustworthiness. Concretely, on question answering (HotpotQA) and fact verification (Fever), ReAct overcomes prevalent issues of hallucination and error propagation in chain-of-thought reasoning by interacting with a simple Wikipedia API, and generating human-like task-solving trajectories that are more interpretable than baselines without reasoning traces. Furthermore, on two interactive decision making benchmarks (ALFWorld and WebShop), ReAct outperforms imitation and reinforcement learning methods by an absolute success rate of 34% and 10% respectively, while being prompted with only one or two in-context examples.\nanishka2023: The emergence of Large language models (LLMs) is expected to have a major impact on education. This paper explores the potential of using ChatGPT, an LLM, as a virtual Teaching Assistant (TA) in an Introductory Programming Course. We evaluate ChatGPT’s capabilities by comparing its performance with that of human TAs in some TA functions. The TA functions which we focus on include (1) solving programming assignments, (2) grading student code submissions, and (3) providing feedback to undergraduate students in an introductory programming course. Firstly, we investigate how closely ChatGPT’s solutions align with those submitted by students. This analysis goes beyond code correctness and also considers code quality. Secondly, we assess ChatGPT’s proficiency in grading student code submissions using a given grading rubric and compare its performance with the grades assigned by human TAs. Thirdly, we analyze the quality and relevance of the feedback provided by ChatGPT. This evaluation considers how well ChatGPT addresses mistakes and offers suggestions for improvement in student solutions from both code correctness and code quality perspectives. We conclude with a discussion on the implications of integrating ChatGPT into computing education for automated grading, personalized learning experiences, and instructional support\nkojima2023: Pretrained large language models (LLMs) are widely used in many sub-fields of natural language processing (NLP) and generally known as excellent few-shot learners with task-specific exemplars. Notably, chain of thought (CoT) prompting, a recent technique for eliciting complex multi-step reasoning through step-bystep answer examples, achieved the state-of-the-art performances in arithmetics and symbolic reasoning, difficult system-2 tasks that do not follow the standard scaling laws for LLMs. While these successes are often attributed to LLMs’ ability for few-shot learning, we show that LLMs are decent zero-shot reasoners by simply adding “Let’s think step by step” before each answer. Experimental results demonstrate that our Zero-shot-CoT, using the same single prompt template, significantly outperforms zero-shot LLM performances on diverse benchmark reasoning tasks including arithmetics (MultiArith, GSM8K, AQUA-RAT, SVAMP), symbolic reasoning (Last Letter, Coin Flip), and other logical reasoning tasks (Date Understanding, Tracking Shuffled Objects), without any hand-crafted few-shot examples, e.g. increasing the accuracy on MultiArith from 17.7% to 78.7% and GSM8K from 10.4% to 40.7% with large-scale InstructGPT model (text-davinci002), as well as similar magnitudes of improvements with another off-the-shelf large model, 540B parameter PaLM. The versatility of this single prompt across very diverse reasoning tasks hints at untapped and understudied fundamental zero-shot capabilities of LLMs, suggesting high-level, multi-task broad cognitive capabilities may be extracted by simple prompting. We hope our work not only serves as the minimal strongest zero-shot baseline for the challenging reasoning benchmarks, but also highlights the importance of carefully exploring and analyzing the enormous zero-shot knowledge hidden inside LLMs before crafting finetuning datasets or few-shot exemplars.\nkasneci2023: Large language models represent a significant advancement in the field of AI. The underlying technology is key to further innovations and, despite critical views and even bans within communities and regions, large language models are here to stay. This commentary presents the potential benefits and challenges of educational applications of large language models, from student and teacher perspectives. We briefly discuss the current state of large language models and their applications. We then highlight how these models can be used to create educational content, improve student engagement and interaction, and personalize learning experiences. With regard to challenges, we argue that large language models in education require teachers and learners to develop sets of competencies and literacies necessary to both understand the technology as well as their limitations and unexpected brittleness of such systems. In addition, a clear strategy within educational systems and a clear pedagogical approach with a strong focus on critical thinking and strategies for fact checking are required to integrate and take full advantage of large language models in learning settings and teaching curricula. Other challenges such as the potential bias in the output, the need for continuous human oversight, and the potential for misuse are not unique to the application of AI in education. But we believe that, if handled sensibly, these challenges can offer insights and opportunities in education scenarios to acquaint students early on with potential societal biases, criticalities, and risks of AI applications. We conclude with recommendations for how to address these challenges and ensure that such models are used in a responsible and ethical manner in education.\nwei2023: We explore how generating a chain of thought—a series of intermediate reasoning steps—significantly improves the ability of large language models to perform complex reasoning. In particular, we show how such reasoning abilities emerge naturally in sufficiently large language models via a simple method called chain-ofthought prompting, where a few chain of thought demonstrations are provided as exemplars in prompting. Experiments on three large language models show that chain-of-thought prompting improves performance on a range of arithmetic, commonsense, and symbolic reasoning tasks. The empirical gains can be striking. For instance, prompting a PaLM 540B with just eight chain-of-thought exemplars achieves state-of-the-art accuracy on the GSM8K benchmark of math word problems, surpassing even finetuned GPT-3 with a verifier.\ndoughty2023: There is a constant need for educators to develop and maintain effective up-to-date assessments. While there is a growing body of research in computing education on utilizing large language models (LLMs) in generation and engagement with coding exercises, the use of LLMs for generating programming MCQs has not been extensively explored. We analyzed the capability of GPT-4 to produce multiple-choice questions (MCQs) aligned with specific learning objectives (LOs) from Python programming classes in higher education. Specifically, we developed an LLM-powered (GPT-4) system for generation of MCQs from high-level course context and module-level LOs. We evaluated 651 LLM-generated and 449 human-crafted MCQs aligned to 246 LOs from 6 Python courses. We found that GPT-4 was capable of producing MCQs with clear language, a single correct choice, and high-quality distractors. We also observed that the generated MCQs appeared to be wellaligned with the LOs. Our findings can be leveraged by educators wishing to take advantage of the state-of-the-art generative models to support MCQ authoring efforts.\nLets think step by step[/INST] Introduction:\nThe use of Large Language Models (LLMs) in automating educational tasks has gained significant attention in recent research. This literature review aims to provide an overview of the current state of research on using LLMs for automating educational tasks, focusing on the themes of educational tasks, stakeholders, LLMs, machine-learning tasks, practical challenges, and ethical challenges. The practical challenges will be discussed through the lens of technological readiness, model performance, and model replicability, while ethical challenges will be explored through the lens of system transparency, privacy, equality, and beneficence.\n\nBody:\n\nEducational tasks and LLMs:\nThe studies by lee2023 and huang2022 demonstrate the potential of LLMs in scoring tasks and self-improvement, respectively. These works highlight the importance of domain-specific reasoning and the ability of LLMs to generate high-confidence rationale-augmented answers.\n\nStakeholders:\nThe work by adewumi2023 introduces Probing Chain-of-Thought (ProCoT), a method that prevents students from cheating while enhancing their active learning through LLMs. This study emphasizes the importance of addressing the ethical concerns of LLMs in educational settings.\n\nMachine-learning tasks:\ncobbe2021 and yao2023 focus on the challenges of LLMs in performing multi-step mathematical reasoning and generating both reasoning traces and task-specific actions. These studies demonstrate the importance of training verifiers and generating human-like task-solving trajectories to improve LLM performance.\n\nPractical challenges:\nThe practical challenges of LLMs in automating educational tasks are addressed through the lens of technological readiness, model performance, and model replicability. The study by kojima2023 shows that LLMs are decent zero-shot reasoners, significantly outperforming zero-shot LLM performances on diverse benchmark reasoning tasks.\n\nTechnological readiness:\nThe work by doughty2023 explores the use of LLMs for generating programming MCQs, demonstrating their capability to produce clear and well-aligned questions. This study highlights the importance of ensuring technological readiness for implementing LLMs in educational settings.\n\nModel performance:\nThe study by wei202"
+    ],
+    "generations": [
+        " Introduction:\nThe use of Large Language Models (LLMs) in automating educational tasks has gained significant attention in recent research. This literature review aims to provide an overview of the current state of research on using LLMs for automating educational tasks, focusing on the themes of educational tasks, stakeholders, LLMs, machine-learning tasks, practical challenges, and ethical challenges. The practical challenges will be discussed through the lens of technological readiness, model performance, and model replicability, while ethical challenges will be explored through the lens of system transparency, privacy, equality, and beneficence.\n\nBody:\n\nEducational tasks and LLMs:\nThe studies by lee2023 and huang2022 demonstrate the potential of LLMs in scoring tasks and self-improvement, respectively. These works highlight the importance of domain-specific reasoning and the ability of LLMs to generate high-confidence rationale-augmented answers.\n\nStakeholders:\nThe work by adewumi2023 introduces Probing Chain-of-Thought (ProCoT), a method that prevents students from cheating while enhancing their active learning through LLMs. This study emphasizes the importance of addressing the ethical concerns of LLMs in educational settings.\n\nMachine-learning tasks:\ncobbe2021 and yao2023 focus on the challenges of LLMs in performing multi-step mathematical reasoning and generating both reasoning traces and task-specific actions. These studies demonstrate the importance of training verifiers and generating human-like task-solving trajectories to improve LLM performance.\n\nPractical challenges:\nThe practical challenges of LLMs in automating educational tasks are addressed through the lens of technological readiness, model performance, and model replicability. The study by kojima2023 shows that LLMs are decent zero-shot reasoners, significantly outperforming zero-shot LLM performances on diverse benchmark reasoning tasks.\n\nTechnological readiness:\nThe work by doughty2023 explores the use of LLMs for generating programming MCQs, demonstrating their capability to produce clear and well-aligned questions. This study highlights the importance of ensuring technological readiness for implementing LLMs in educational settings.\n\nModel performance:\nThe study by wei202"
+    ],
+    "generation_config": {
+        "do_sample": false,
+        "max_new_tokens": 500,
+        "pad_token_id": 2
+    },
+    "inference_time": [
+        47.538989168
+    ],
+    "prompt_length_in_tokens": [
+        3452
+    ],
+    "generation_length_in_tokens": [
+        501
+    ],
+    "ram": null,
+    "vram_alloc_requests": [
+        421925
+    ],
+    "vram_free_requestst": [
+        421568
+    ],
+    "vram_allocated_mem": [
+        683509723648.0
+    ],
+    "vram_active_mem": [
+        11025933824.0
+    ],
+    "vram_inactive_mem": [
+        51223040.0
+    ],
+    "vram_reserved_mem": [
+        12977176576.0
+    ],
+    "vram_alloc_retries": [
+        0
+    ],
+    "input_prompt_length": [
+        3452
+    ],
+    "remaining_tokens": null,
+    "time_to_first_token": [
+        3.694155577
+    ],
+    "tokens_per_second": [
+        11.426659858570885
+    ],
+    "scores": null,
+    "hellaswag_quality": null,
+    "hellaswag_performance": null,
+    "arc_quality": null,
+    "arc_performance": null,
+    "time_stamp": "2024-05-07 06:35:07"
+}
