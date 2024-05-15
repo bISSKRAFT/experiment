@@ -1,7 +1,18 @@
+#############################################################################################
+#                                                                                           #
+#               Built upon Huggingface's Transformers library                               #
+#                 https://github.com/huggingface/transformers                               #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################
+
+
+
+
 from enum import Enum
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding
 from typing import Any, Callable, Dict, List, Optional
 import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding
 from awq import AutoAWQForCausalLM
 from auto_gptq import AutoGPTQForCausalLM
 
@@ -10,6 +21,12 @@ from src.models.llms.factories import InferenceLLMFactory
 from src.llms.config.generation_config import GenerationConfigMixin
 from src.models.llms.base import InferenceLLM
 
+
+
+
+
+
+# DISCLAIMER: Not used for the evaluation
 class OptLocals(Enum):
     opt_13b = "facebook/opt-13b"
     opt_temp = ""

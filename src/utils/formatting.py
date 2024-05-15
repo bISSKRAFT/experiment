@@ -1,3 +1,15 @@
+#############################################################################################
+#                                                                                           #
+#       Inspired by LangChain https://github.com/langchain-ai/langchain                     #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################
+
+
+
+
+
+
 from string import Formatter
 from typing import Sequence, Mapping, Any, List
 

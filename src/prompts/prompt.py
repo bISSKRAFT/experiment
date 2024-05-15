@@ -1,5 +1,16 @@
-from typing import Any, Dict
+#############################################################################################
+#                                                                                           #
+#       Inspired by LangChain https://github.com/langchain-ai/langchain                     #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################
 
+
+
+
+
+
+from typing import Any, Dict
 from pydantic.v1 import root_validator
 
 from src.models.prompts.base import BaseTemplate, check_valid_template

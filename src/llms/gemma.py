@@ -1,14 +1,26 @@
+#############################################################################################
+#                                                                                           #
+#               Built upon Huggingface's Transformers library                               #
+#                 https://github.com/huggingface/transformers                               #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################
+
+
+
+
 from enum import Enum
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding
 from typing import Any, Callable, Dict, List, Optional
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BatchEncoding
 import torch
 from awq import AutoAWQForCausalLM
 from auto_gptq import AutoGPTQForCausalLM
 
-
 from src.models.llms.factories import InferenceLLMFactory
 from src.llms.config.generation_config import GenerationConfigMixin
 from src.models.llms.base import InferenceLLM
+
+
 
 class GemmaLocals(Enum):
     gemma_7b_it = "google/gemma-7b-it"
