@@ -1,4 +1,4 @@
-# 🚀 Unlocking the Efficiency of Language Models: Balancing Efficiency and Quality in Instruction-Tuned Models
+# 🚀 Optimizing Instruction-Tuned Language Models: An Evaluation of Optimization for Resource Efficiency and Generation Speed
 
 This project is the implemenation of my master thesis. It uses the 🤗-Transformers library to generate text based on a given prompt.
 
