@@ -1,7 +1,21 @@
-from abc import ABC, abstractmethod
-from typing import List
-import time
+#############################################################################################
+#                                                                                           #
+#       Inspired by LangChain https://github.com/langchain-ai/langchain                     #
+#                                                                                           #
+#                                                                                           #
+#               Built upon Huggingface's Transformers library                               #
+#                 https://github.com/huggingface/transformers                               #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################         
 
+
+
+import time
+from abc import ABC, abstractmethod
+from typing import List, Optional
+
+from src.llms.config.generation_config import GenerationConfigMixin
 from src.models.output import GenerationResult
 
 
@@ -17,6 +31,7 @@ class BaseLLM(ABC):
     def _generate(
             self,
             prompts: List[str],
+            generation_config: Optional[GenerationConfigMixin],
             callbacks,
     ) -> GenerationResult:
         """Run the LLM on the given input"""
@@ -28,14 +43,26 @@ class BaseLLM(ABC):
         ) -> List[int]:
         """Get the length of the prompt in tokens"""
 
+    def get_model_size(self) -> int:
+        """Get the maximum length of the model"""
+        max_position_embeddings = self.config.get("max_position_embeddings", 0)
+        n_positions = self.config.get("n_positions", 0)
+        if max_position_embeddings > 0:
+            return max_position_embeddings
+        elif n_positions > 0:
+            return n_positions
+        else:
+            return 0
+
     def generate_prompt(
             self,
             prompts: List[str],
+            generation_config: Optional[GenerationConfigMixin],
             callbacks,
     ) -> GenerationResult:
         """Generate a LLM response from the given input"""
         prompt_lengths = self._get_prompt_length_in_tokens(prompts)
-        generations = self._generate(prompts, callbacks)
+        generations = self._generate(prompts, callbacks, generation_config)
         generations.used_model = self.model_name
         generations.config = self.config
         generations.prompt_length_in_tokens = prompt_lengths
@@ -43,17 +70,19 @@ class BaseLLM(ABC):
 
     def invoke(self,
                prompt: str,
+               generation_config: Optional[GenerationConfigMixin] = None,
                callbacks = None,
                ) -> GenerationResult:
         """Generate a LLM response from the given input"""
-        return self.generate_prompt([prompt], callbacks)
+        return self.generate_prompt([prompt], callbacks, generation_config)
     
     def batch(self,
               prompts: List[str],
+              generation_config: Optional[GenerationConfigMixin] = None,
               callbacks = None,
               ) -> GenerationResult:
         """Generate LLM response from a batch of prompts"""
-        return self.generate_prompt(prompts, callbacks)
+        return self.generate_prompt(prompts, callbacks, generation_config)
 
 
 class InferenceLLM(BaseLLM, ABC):
@@ -66,45 +95,43 @@ class InferenceLLM(BaseLLM, ABC):
                 config: dict
         ) -> dict:
         """Get the model config from the checkpoint"""
-
-    @abstractmethod
-    def _get_model(
-                self, 
-                checkpoint: str, 
-                config: dict, 
-                compiling: bool = False
-        ):
-        """Get the model from the checkpoint"""
-
+        
     @abstractmethod
     def _call(
             self,
-            prompt: str
+            prompt: str,
+            generation_config: Optional[GenerationConfigMixin],
     ) -> str:
         """Run the LLM on the given input"""
 
     def _generate(
             self,
             prompts: List[str],
+            generation_config: Optional[GenerationConfigMixin],
             callbacks,
     ) -> GenerationResult:
         """Run the LLM on the given input"""
+        full_generations = []
         generations = []
         mem_report = []
         inference_time = []
 
         for prompt in prompts:
-            start_time = time.perf_counter()
-            generations.append(self._call(prompt))
-            inference_time.append(time.perf_counter() - start_time)
+            start_time = time.perf_counter_ns()
+            gen = self._call(prompt, generation_config)
+            inference_time.append((time.perf_counter_ns() - start_time) / 10**9)
             if callbacks:
                 mem_report.append(callbacks.memory_report())
+            full_generations.append(gen)
+            generations.append(gen.replace(prompt, ""))
 
         organized_mem_report = callbacks.organize_memory_report(mem_report) if callbacks else {}
         generation_lengths = self._get_prompt_length_in_tokens(generations)
 
         return GenerationResult(
+            full_generations=full_generations,
             generations=generations,
+            generation_config=generation_config.generation_config if generation_config else None,
             generation_length_in_tokens=generation_lengths,
             inference_time=inference_time if inference_time else None,
             vram_alloc_requests=organized_mem_report.get("alloc_requests", None),

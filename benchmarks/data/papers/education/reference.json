@@ -1,0 +1,4 @@
+{
+    "role": "literature review",
+    "reference": "With the advancements in AI technology, Large Language Models (LLMs) are capable of understanding and executing described tasks (kojima2023, huang2022, cobbe2021). Combining this with methods, which also provide the thought process of finding a solution, LLMs can solve complex problems (Wei2023, Yao2023). Therefore researches are interested if LLMs could be used in education. It has been evaluated that LLMs can generate personalized learning materials and provide valuable feedback for student submitted solutions (kasneci2023, doughty2023, anishka2023, adewumi2023). But also the automation of the grading process has been evaluated and can be supported with the use of LLMs (lee2023, anishka2023). But the risks with using these models has to be kept in mind. Educational data could be prone to biases and outputs could be false and should be peer reviewed by a human expert (kasneci2023)."
+}
