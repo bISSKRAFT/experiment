@@ -18,7 +18,7 @@ The project mainly uses 🤗-Transformers and subsequent libraries.
 | autoawq         | 0.2.4       |
 | autoawq_kernels | 0.0.6       |
 
-The performance numbers are generated using a single Nvidia A40 GPU.
+The performance numbers are generated using a single Nvidia A40 GPU with 45GB memory.
 
 ### ✅ Installing environment
 ```python
