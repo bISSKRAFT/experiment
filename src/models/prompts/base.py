@@ -1,6 +1,17 @@
+#############################################################################################
+#                                                                                           #
+#       Inspired by LangChain https://github.com/langchain-ai/langchain                     #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################
+
+
+
+
 from abc import ABC, abstractmethod
 from typing import List, Any
 from pydantic.v1 import BaseModel, root_validator
+
 from src.utils.formatting import formatter
 
 
