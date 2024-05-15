@@ -1,8 +1,21 @@
+#############################################################################################
+#                                                                                           #
+#       Inspired by LangChain https://github.com/langchain-ai/langchain                     #
+#                                                                                           #
+#                                                                                           #
+#               Built upon Huggingface's Transformers library                               #
+#                 https://github.com/huggingface/transformers                               #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################         
+
+
+
+import time
 from abc import ABC, abstractmethod
 from typing import List, Optional
-import time
-from src.llms.config.generation_config import GenerationConfigMixin
 
+from src.llms.config.generation_config import GenerationConfigMixin
 from src.models.output import GenerationResult
 
 

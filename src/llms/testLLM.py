@@ -1,10 +1,26 @@
+#############################################################################################
+#                                                                                           #
+#               Built upon Huggingface's Transformers library                               #
+#                 https://github.com/huggingface/transformers                               #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################
+
+
+
+
+
+
 from typing import List
 from torch import device
 from transformers import AutoTokenizer, AutoModelForCausalLM, BatchEncoding
+
+
+
 from src.models.llms.base import InferenceLLM
 
 
-
+# NOTE: This class was used for testing purposes only
 class Distillgpt2Local(InferenceLLM):
     """A class to represent a 🤗 DistilGPT2 language model"""
 

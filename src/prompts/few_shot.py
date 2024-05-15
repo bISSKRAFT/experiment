@@ -1,9 +1,20 @@
-from typing import List, Optional, Dict, Any
+#############################################################################################
+#                                                                                           #
+#       Inspired by LangChain https://github.com/langchain-ai/langchain                     #
+#                                                                                           #
+#                                                                                           #
+#############################################################################################
 
+
+
+
+
+from typing import List, Optional, Dict, Any
 from pydantic.v1 import root_validator
 
 from src.prompts.prompt import BaseTemplate, PromptTemplate
 from src.utils.formatting import formatter
+
 
 
 class FewShotTemplate(BaseTemplate):
